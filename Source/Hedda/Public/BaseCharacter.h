@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "DamageTypeEnum.h"
+#include "Joint.h"
+#include "Member.h"
 #include "BaseCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -48,31 +50,34 @@ public:
 	const float GetMana() const;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float THP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float CHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float RHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float stamina;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float staminaMax;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float movementSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float rotationSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float mana;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	Faction faction;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float CHPHealthSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float timeBeforeHealing;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float healingCooldown;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float currentHealingCooldown;
-
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	TArray<UMember*> members;
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	TArray<UJoint*> joints;
 };
