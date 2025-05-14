@@ -63,7 +63,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float movementSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float rotationSpeed;
+	float headRotationSpeed;
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	float bodyRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float mana;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
