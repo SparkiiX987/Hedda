@@ -5,7 +5,7 @@
 #include "DamageTypeEnum.generated.h"
 
 UENUM(BlueprintType)
-enum class UDamageTypeEnum : uint8
+enum class EDamageTypeEnum : uint8
 {
 	Cut		UMETA(DisplayName = "Cut"),
 	Blunt	UMETA(DisplayName = "Blunt"),
