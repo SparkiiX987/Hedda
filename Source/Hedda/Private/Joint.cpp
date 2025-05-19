@@ -3,14 +3,18 @@
 UJoint::UJoint()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	SkeletalMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+
 }
 
 
 void UJoint::BeginPlay()
 {
 	Super::BeginPlay();
-
+	AActor* owner = GetOwner();
+	if (owner)
+	{
+		SkeletalMesh = owner->FindComponentByClass<USkeletalMeshComponent>();
+	}
 	
 }
 
