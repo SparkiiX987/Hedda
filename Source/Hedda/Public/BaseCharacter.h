@@ -25,6 +25,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterFunction")
+	void Death();
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -37,8 +39,7 @@ public:
 	void Heal(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	const EFaction GetFaction() const;
-	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterFunction")
-	void Death();
+	
 
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
