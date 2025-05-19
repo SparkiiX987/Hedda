@@ -8,11 +8,11 @@
 #include "BaseCharacter.generated.h"
 
 UENUM(BlueprintType)
-enum class Faction : uint8
+enum class EFaction : uint8
 {
 	Mage	UMETA(DisplayName = "Mage"),
 	Mecha	UMETA(DisplayName = "Mecha"),
-	Neurtal UMETA(DisplayName = "Neutral")
+	Neutral UMETA(DisplayName = "Neutral")
 };
 
 UCLASS()
@@ -25,9 +25,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void HealCHP(float _deltaTime);
+	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterFunction")
+	void Death();
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -35,47 +34,26 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void DealDamage(UDamageTypeEnum _damageType, float _amount, float _time);
+	void DealDamage(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void AddStamina(float _amount);
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void SetTimeBeforeHealing(float _time);
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const Faction GetFaction() const;
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const float GetStaimana() const;
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const float GetMana() const;
+	const EFaction GetFaction() const;
+	
 
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float THP;
+	float maxHealPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float CHP;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float RHP;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float stamina;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float staminaMax;
+	float healPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float movementSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float rotationSpeed;
+	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float mana;
+	float bodyRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	Faction faction;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float CHPHealthSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float timeBeforeHealing;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float healingCooldown;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float currentHealingCooldown;
+	EFaction faction;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
