@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "NiagaraSystem.h"
@@ -30,6 +28,8 @@ class HEDDA_API UWeapon : public UDataAsset
 		float attackSpeed;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		float reloadTime;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		int bulletNumber;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		int ammo;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
