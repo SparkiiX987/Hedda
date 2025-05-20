@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
 #include "Joint.h"
 #include "Member.h"
@@ -27,6 +28,10 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterFunction")
 	void Death();
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateBody(float _deltaTime);
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateHead(FVector2D _rotationOffset);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -39,9 +44,14 @@ public:
 	void Heal(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	const EFaction GetFaction() const;
-	
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	const FVector2D GetHeadLookOffset() const;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FVector2D HeadLookOffset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float BodyRotationInterpSpeed = 6.f;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float maxHealPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
