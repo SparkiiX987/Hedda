@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Weapon.h"
 #include "FPSProjectile.generated.h"
 
 UCLASS()
@@ -46,4 +47,7 @@ public:
     // Function that is called when the projectile hits something.
     UFUNCTION()
     void OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit);
+
+    UPROPERTY()
+	class UWeapon* weapon;
 };

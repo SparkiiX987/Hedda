@@ -54,14 +54,16 @@ AFPSProjectile::AFPSProjectile()
     }
 
     // Delete the projectile after 3 seconds.
-    InitialLifeSpan = 3.0f;
+    if(weapon != nullptr)
+    {
+        InitialLifeSpan = weapon->lifeSpan;
+    }
 }
 
 // Called when the game starts or when spawned
 void AFPSProjectile::BeginPlay()
 {
     Super::BeginPlay();
-
 }
 
 // Called every frame

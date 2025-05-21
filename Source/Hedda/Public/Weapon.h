@@ -16,7 +16,7 @@ UCLASS()
 class HEDDA_API UWeapon : public UDataAsset
 {
 	GENERATED_BODY()
-	
+
 	public : 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		FString weaponName;
@@ -32,8 +32,14 @@ class HEDDA_API UWeapon : public UDataAsset
 		int bulletNumber;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		int ammo;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
+		float lifeSpan;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
+		float bulletSpeed;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		float spread;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 		UNiagaraSystem* muzzleParticle;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		AActor* projectile;
+		TSubclassOf <AActor> projectile;
 };
