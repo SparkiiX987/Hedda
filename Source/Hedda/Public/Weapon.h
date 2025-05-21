@@ -32,8 +32,10 @@ class HEDDA_API UWeapon : public UDataAsset
 		int bulletNumber;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		int ammo;
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		float range;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
+		float lifeSpan;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
+		float bulletSpeed;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		float spread;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
