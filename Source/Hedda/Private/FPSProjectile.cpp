@@ -51,14 +51,7 @@ AFPSProjectile::AFPSProjectile()
 
         projectileMesh->SetRelativeScale3D(FVector(0.09f, 0.09f, 0.09f));
         projectileMesh->SetupAttachment(RootComponent);
-    }
-
-    // Delete the projectile after 3 seconds.
-    if(weapon != nullptr)
-    {
-        InitialLifeSpan = weapon->lifeSpan;
-    }
-
+    }    
 }
 
 // Called when the game starts or when spawned

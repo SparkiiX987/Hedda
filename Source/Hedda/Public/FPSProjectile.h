@@ -48,6 +48,4 @@ public:
     UFUNCTION()
     void OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit);
 
-    UPROPERTY()
-	class UWeapon* weapon;
 };

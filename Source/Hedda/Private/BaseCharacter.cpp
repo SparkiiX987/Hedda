@@ -84,8 +84,6 @@ void ABaseCharacter::FirstAttack()
 
 	if (!world) return;
 
-
-
 	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
 	{		
 		FActorSpawnParameters SpawnParams;
@@ -93,6 +91,7 @@ void ABaseCharacter::FirstAttack()
 		SpawnParams.Instigator = GetInstigator();
 
 		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
+
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot FW"));
 	}
 	else 
@@ -115,6 +114,7 @@ void ABaseCharacter::SecondAttack()
 		SpawnParams.Instigator = GetInstigator();
 
 		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
+
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
 	}
 	else 
