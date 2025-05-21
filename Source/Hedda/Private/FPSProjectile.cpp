@@ -1,5 +1,6 @@
 
 #include "FPSProjectile.h"
+#include "BaseCharacter.h"
 
 // Sets default values
 AFPSProjectile::AFPSProjectile()
@@ -19,7 +20,7 @@ AFPSProjectile::AFPSProjectile()
         // Set the sphere's collision profile name to "Projectile".
         sphereComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
         // Event called when component hits something.
-        sphereComponent->OnComponentHit.AddDynamic(this,AFPSProjectile::OnImpact);
+        sphereComponent->OnComponentHit.AddDynamic(this, &AFPSProjectile::OnImpact);
         // Set the sphere's collision radius.
         sphereComponent->InitSphereRadius(15.0f);
         // Set the root component to be the collision component.
@@ -70,8 +71,14 @@ void AFPSProjectile::Tick(float DeltaTime)
 
 }
 
-void AFPSProjectile::OnImpact(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+void AFPSProjectile::OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit)
 {   
+    ABaseCharacter* enemy = static_cast<ABaseCharacter*>(_otherActor);
+    if (enemy != nullptr) 
+    {
+        enemy->DealDamage(damage);
+    }
+
     Destroy();
 }
 
