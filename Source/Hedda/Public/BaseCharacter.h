@@ -6,8 +6,8 @@
 #include "DamageTypeEnum.h"
 #include "Joint.h"
 #include "Member.h"
-#include "BaseCharacter.generated.h"
 #include "Weapon.h"
+#include "BaseCharacter.generated.h"
 
 UENUM(BlueprintType)
 enum class EFaction : uint8
@@ -73,7 +73,6 @@ protected:
 	TArray<UMember*> members;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UJoint*> joints;
-	UPROPERTY(BlueprintCallAble, Category = "CharacterVariables")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
-
 };

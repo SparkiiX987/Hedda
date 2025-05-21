@@ -79,8 +79,14 @@ void ABaseCharacter::FirstAttack()
 {
 	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
 	{
-		UClass* ProjectileClass = weapons[0]->projectile->GetClass();
-		AActor* bullet = GetWorld()->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation());
+		UClass* projectileClass = weapons[0]->projectile->GetClass();
+		AActor* bullet = GetWorld()->SpawnActor<AActor>(projectileClass, GetActorLocation(), GetActorRotation());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot FW"));
+	}
+	else 
+	{
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("First weapon invalid"));
 	}
 }
 
@@ -88,7 +94,12 @@ void ABaseCharacter::SecondAttack()
 {
 	if (weapons.Num() > 0 && weapons[1] && weapons[1]->projectile)
 	{
-		UClass* ProjectileClass = weapons[1]->projectile->GetClass();
-		AActor* bullet = GetWorld()->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation());
+		UClass* projectileClass = weapons[1]->projectile->GetClass();
+		AActor* bullet = GetWorld()->SpawnActor<AActor>(projectileClass, GetActorLocation(), GetActorRotation());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
+	}
+	else 
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Second weapon invalid"));
 	}
 }
