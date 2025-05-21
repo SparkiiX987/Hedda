@@ -16,7 +16,7 @@ UCLASS()
 class HEDDA_API UWeapon : public UDataAsset
 {
 	GENERATED_BODY()
-	
+
 	public : 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		FString weaponName;

@@ -74,3 +74,21 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
 	return HeadLookOffset;
 }
+
+void ABaseCharacter::FirstAttack()
+{
+	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
+	{
+		UClass* ProjectileClass = weapons[0]->projectile->GetClass();
+		AActor* bullet = GetWorld()->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void ABaseCharacter::SecondAttack()
+{
+	if (weapons.Num() > 0 && weapons[1] && weapons[1]->projectile)
+	{
+		UClass* ProjectileClass = weapons[1]->projectile->GetClass();
+		AActor* bullet = GetWorld()->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation());
+	}
+}

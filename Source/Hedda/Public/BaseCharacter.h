@@ -7,6 +7,7 @@
 #include "Joint.h"
 #include "Member.h"
 #include "BaseCharacter.generated.h"
+#include "Weapon.h"
 
 UENUM(BlueprintType)
 enum class EFaction : uint8
@@ -46,6 +47,10 @@ public:
 	const EFaction GetFaction() const;
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	const FVector2D GetHeadLookOffset() const;
+	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
+	void FirstAttack();
+	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
+	void SecondAttack();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
@@ -68,4 +73,7 @@ protected:
 	TArray<UMember*> members;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UJoint*> joints;
+	UPROPERTY(BlueprintCallAble, Category = "CharacterVariables")
+	TArray<UWeapon*> weapons;
+
 };
