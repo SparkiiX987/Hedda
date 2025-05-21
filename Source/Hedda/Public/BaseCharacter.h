@@ -7,6 +7,7 @@
 #include "Joint.h"
 #include "Member.h"
 #include "Weapon.h"
+#include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
 
 UENUM(BlueprintType)

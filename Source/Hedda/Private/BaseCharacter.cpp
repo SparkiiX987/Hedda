@@ -52,7 +52,10 @@ void ABaseCharacter::DealDamage(float _amount)
 	healPoint -= _amount;
 	if (healPoint <= 0)
 	{
-		Death();
+		/*if (GetClass()->IsFunctionImplementedInScript(TEXT("Death")))
+		{
+		}*/
+			Death();
 	}
 }
 
@@ -77,10 +80,19 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 
 void ABaseCharacter::FirstAttack()
 {
+	UWorld* world = GetWorld();
+
+	if (!world) return;
+
+
+
 	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
-	{
-		UClass* projectileClass = weapons[0]->projectile->GetClass();
-		AActor* bullet = GetWorld()->SpawnActor<AActor>(projectileClass, GetActorLocation(), GetActorRotation());
+	{		
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot FW"));
 	}
 	else 
@@ -92,10 +104,17 @@ void ABaseCharacter::FirstAttack()
 
 void ABaseCharacter::SecondAttack()
 {
+	UWorld* world = GetWorld();
+
+	if (!world) return;
+
 	if (weapons.Num() > 0 && weapons[1] && weapons[1]->projectile)
 	{
-		UClass* projectileClass = weapons[1]->projectile->GetClass();
-		AActor* bullet = GetWorld()->SpawnActor<AActor>(projectileClass, GetActorLocation(), GetActorRotation());
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
 	}
 	else 

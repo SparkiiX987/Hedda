@@ -58,6 +58,7 @@ AFPSProjectile::AFPSProjectile()
     {
         InitialLifeSpan = weapon->lifeSpan;
     }
+
 }
 
 // Called when the game starts or when spawned
@@ -74,13 +75,13 @@ void AFPSProjectile::Tick(float DeltaTime)
 }
 
 void AFPSProjectile::OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit)
-{   
-    ABaseCharacter* enemy = static_cast<ABaseCharacter*>(_otherActor);
-    if (enemy != nullptr) 
+{      
+    ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
+    if (enemy != nullptr)
     {
         enemy->DealDamage(damage);
     }
 
-    Destroy();
+    //Destroy();
 }
 
