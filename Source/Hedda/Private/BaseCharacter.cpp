@@ -5,6 +5,9 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	
+	forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
+	forearm->SetupAttachment(GetMesh());	
 }
 
 void ABaseCharacter::BeginPlay()
@@ -51,7 +54,7 @@ void ABaseCharacter::DealDamage(float _amount)
 {
 	healPoint -= _amount;
 	if (healPoint <= 0)
-	{
+	{		
 		Death();
 	}
 }
@@ -73,4 +76,56 @@ const EFaction ABaseCharacter::GetFaction() const
 const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
 	return HeadLookOffset;
+}
+
+void ABaseCharacter::FirstAttack()
+{
+	Attack(0);	
+}
+
+void ABaseCharacter::SecondAttack()
+{
+	Attack(1);
+}
+
+void ABaseCharacter::Attack(int _weapon)
+{
+	UWorld* world = GetWorld();
+
+	if (!world) return;
+
+	if (weapons.Num() > 0 && weapons[_weapon] && weapons[_weapon]->projectile)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		TSubclassOf<AActor> ProjectileClass = weapons[_weapon]->projectile;
+		float projectileSpread = FMath::Clamp(weapons[_weapon]->spread, 0.0f, 100.0f);
+		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
+
+		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
+		FVector forwardVector = GetActorForwardVector();
+        FVector spawnLocation = forearm->GetComponentLocation();
+
+		for(int i = 0; i < projectileShoot; i++)
+		{
+			if (projectileSpread == 0) 
+			{
+				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, GetActorRotation(), SpawnParams);
+
+				FVector end = spawnLocation + forwardVector * 1000.0f;
+				DrawDebugLine(world, spawnLocation, end, FColor::Green, false, 2.0f, 0, 1.5f);
+			}
+			else
+            {
+				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
+				FRotator spawnRotation = randomDir.Rotation();
+				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+
+				FVector end = spawnLocation + randomDir * 1000.0f;
+				DrawDebugLine(world, spawnLocation, end, FColor::Red, false, 2.0f, 0, 1.5f);
+            }
+		}
+	}
 }
