@@ -89,8 +89,9 @@ void ABaseCharacter::FirstAttack()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = GetInstigator();
+		TSubclassOf<AActor> ProjectileClass = weapons[0]->projectile;
 
-		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
+		AActor* projectile = world->SpawnActor<AActor>(ProjectileClass,GetActorLocation(), GetActorRotation(), SpawnParams);
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot FW"));
 	}
@@ -113,7 +114,9 @@ void ABaseCharacter::SecondAttack()
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = GetInstigator();
 
-		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(GetActorLocation(), GetActorRotation(), SpawnParams);
+		TSubclassOf<AActor> ProjectileClass = weapons[1]->projectile;
+
+		AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
 	}
