@@ -52,6 +52,8 @@ public:
 	void FirstAttack();
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void SecondAttack();
+	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
+	void Attack(int _weapon);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")

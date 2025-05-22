@@ -80,47 +80,36 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 
 void ABaseCharacter::FirstAttack()
 {
-	UWorld* world = GetWorld();
-
-	if (!world) return;
-
-	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
-	{		
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = this;
-		SpawnParams.Instigator = GetInstigator();
-		TSubclassOf<AActor> ProjectileClass = weapons[0]->projectile;
-
-		AActor* projectile = world->SpawnActor<AActor>(ProjectileClass,GetActorLocation(), GetActorRotation(), SpawnParams);
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot FW"));
-	}
-	else 
-	{
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("First weapon invalid"));
-	}
+	Attack(0);	
 }
 
 void ABaseCharacter::SecondAttack()
+{
+	Attack(1);
+}
+
+void ABaseCharacter::Attack(int _weapon)
 {
 	UWorld* world = GetWorld();
 
 	if (!world) return;
 
-	if (weapons.Num() > 0 && weapons[1] && weapons[1]->projectile)
+	if (weapons.Num() > 0 && weapons[_weapon] && weapons[_weapon]->projectile)
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = GetInstigator();
 
-		TSubclassOf<AActor> ProjectileClass = weapons[1]->projectile;
+		TSubclassOf<AActor> ProjectileClass = weapons[_weapon]->projectile;
 
-		AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+		for(int i = 0; i < weapons[_weapon]->bulletNumber; i++)
+		{
+            AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+		}
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
 	}
-	else 
+	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Second weapon invalid"));
 	}
