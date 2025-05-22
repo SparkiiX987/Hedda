@@ -74,6 +74,8 @@ protected:
 	EFaction faction;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UMember* forearm;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UJoint*> joints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")

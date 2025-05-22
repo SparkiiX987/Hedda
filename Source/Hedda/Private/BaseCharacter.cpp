@@ -5,6 +5,9 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	
+	forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
+	forearm->SetupAttachment(GetMesh());	
 }
 
 void ABaseCharacter::BeginPlay()
@@ -51,11 +54,8 @@ void ABaseCharacter::DealDamage(float _amount)
 {
 	healPoint -= _amount;
 	if (healPoint <= 0)
-	{
-		/*if (GetClass()->IsFunctionImplementedInScript(TEXT("Death")))
-		{
-		}*/
-			Death();
+	{		
+		Death();
 	}
 }
 
@@ -101,16 +101,31 @@ void ABaseCharacter::Attack(int _weapon)
 		SpawnParams.Instigator = GetInstigator();
 
 		TSubclassOf<AActor> ProjectileClass = weapons[_weapon]->projectile;
+		float projectileSpread = FMath::Clamp(weapons[_weapon]->spread, 0.0f, 100.0f);
+		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
 
-		for(int i = 0; i < weapons[_weapon]->bulletNumber; i++)
+		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
+		FVector forwardVector = GetActorForwardVector();
+        FVector spawnLocation = forearm->GetComponentLocation();
+
+		for(int i = 0; i < projectileShoot; i++)
 		{
-            AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
-		}
+			if (projectileSpread == 0) 
+			{
+				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, GetActorRotation(), SpawnParams);
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shoot SW"));
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Second weapon invalid"));
+				FVector end = spawnLocation + forwardVector * 1000.0f;
+				DrawDebugLine(world, spawnLocation, end, FColor::Green, false, 2.0f, 0, 1.5f);
+			}
+			else
+            {
+				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
+				FRotator spawnRotation = randomDir.Rotation();
+				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+
+				FVector end = spawnLocation + randomDir * 1000.0f;
+				DrawDebugLine(world, spawnLocation, end, FColor::Red, false, 2.0f, 0, 1.5f);
+            }
+		}
 	}
 }

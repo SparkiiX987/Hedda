@@ -37,5 +37,5 @@ class HEDDA_API UWeapon : public UDataAsset
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 		UNiagaraSystem* muzzleParticle;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		TSubclassOf <AActor> projectile;
+		TSubclassOf<AActor> projectile;
 };
