@@ -34,6 +34,8 @@ protected:
 	void RotateBody(float _deltaTime);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateHead(FVector2D _rotationOffset);
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateArms(float _deltaTime);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -57,9 +59,13 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
-	FVector2D HeadLookOffset;
+	FVector2D headLookOffset;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
-	float BodyRotationInterpSpeed = 6.f;
+	float bodyRotationInterpSpeed = 6.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float armsRotationInterpSpeed = 6.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float armLookOffsetPitch;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float maxHealPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
@@ -76,6 +82,8 @@ protected:
 	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UMember* forearm;
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	FName forarmSocketName;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UJoint*> joints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
