@@ -76,7 +76,7 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
 	EFaction faction;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;

@@ -13,11 +13,12 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ABaseCharacter::RotateBody(float _deltaTime)
 {
+	if (Controller == nullptr)
+		return;
 	FRotator CurrentControlRot = GetControlRotation();
 
 	float TargetYaw = CurrentControlRot.Yaw + headLookOffset.X;
@@ -25,7 +26,7 @@ void ABaseCharacter::RotateBody(float _deltaTime)
 	FRotator TargetRot(0.f, TargetYaw, 0.f);
 	FRotator SmoothedRot = FMath::RInterpTo(CurrentControlRot, TargetRot, _deltaTime, bodyRotationInterpSpeed);
 
-	Controller->SetControlRotation(SmoothedRot);
+		Controller->SetControlRotation(SmoothedRot);
 
 	float DeltaYaw = FRotator::NormalizeAxis(SmoothedRot.Yaw - CurrentControlRot.Yaw);
 	headLookOffset.X -= DeltaYaw;
@@ -53,7 +54,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ABaseCharacter::DealDamage(float _amount)
