@@ -4,19 +4,14 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
+#include "EFaction.h"
 #include "Joint.h"
 #include "Member.h"
 #include "Weapon.h"
 #include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
 
-UENUM(BlueprintType)
-enum class EFaction : uint8
-{
-	Mage	UMETA(DisplayName = "Mage"),
-	Mecha	UMETA(DisplayName = "Mecha"),
-	Neutral UMETA(DisplayName = "Neutral")
-};
+
 
 UCLASS()
 class HEDDA_API ABaseCharacter : public ACharacter

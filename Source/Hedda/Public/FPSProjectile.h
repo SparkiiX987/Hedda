@@ -1,12 +1,13 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EFaction.h"
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Weapon.h"
 #include "FPSProjectile.generated.h"
+
 
 UCLASS()
 class HEDDA_API AFPSProjectile : public AActor
@@ -42,9 +43,12 @@ public:
     UStaticMeshComponent* projectileMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
-	float damage = 20.0f;	
+	float damage = 20.0f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+    EFaction faction;
+    
     // Function that is called when the projectile hits something.
-    UFUNCTION()
-    void OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit);
+    UFUNCTION(BlueprintCallable, Category = "Rotation")
+    void OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent);
 
 };

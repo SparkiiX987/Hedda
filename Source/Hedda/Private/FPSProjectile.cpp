@@ -4,6 +4,8 @@
 #include "Joint.h"
 #include "Member.h"
 
+
+
 // Sets default values
 AFPSProjectile::AFPSProjectile()
 {
@@ -21,8 +23,6 @@ AFPSProjectile::AFPSProjectile()
         sphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
         // Set the sphere's collision profile name to "Projectile".
         sphereComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
-        // Event called when component hits something.
-        sphereComponent->OnComponentHit.AddDynamic(this, &AFPSProjectile::OnImpact);
         // Set the sphere's collision radius.
         sphereComponent->InitSphereRadius(15.0f);
         // Set the root component to be the collision component.
@@ -69,15 +69,24 @@ void AFPSProjectile::Tick(float DeltaTime)
 
 }
 
-void AFPSProjectile::OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit)
-{      
+void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent)
+{
+    if (!IsValid(_otherActor) || !IsValid(_otherComponent)) return ;
+    
+    // GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("avant caca"));
     ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
-    if (enemy != nullptr)
+    
+    if (IsValid(enemy))
     {
         enemy->DealDamage(damage);
     }
+    if(enemy->GetFaction() == faction)
+    {
+        Destroy();
+        return;
+    }
 
-    UJoint* joint = Cast<UJoint>(_otherComponent);
+    /*UJoint* joint = Cast<UJoint>(_otherComponent);
     UMember* member = nullptr;
 
     if (joint != nullptr && joint->attachedMember != nullptr)
@@ -98,8 +107,6 @@ void AFPSProjectile::OnImpact(UPrimitiveComponent* _hitComponent, AActor* _other
         {
             member->TakeDamage(damage);
         }
-    }
-
-    //Destroy();
+    }*/
 }
 
