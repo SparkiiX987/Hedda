@@ -12,19 +12,18 @@ class HEDDA_API UMember : public USkeletalMeshComponent
 public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	UMember();
-	UFUNCTION(BlueprintCallable)
-	const int GetHitPoint() const;
-
-protected:
-	void Heal(float DeltaTime);
 
 	UFUNCTION(BlueprintCallable)
-	void TakeDamage();
+	const float GetHealPoints() const;
+
+	UFUNCTION(BlueprintCallable)
+	void TakeDamage(float _amount);
 
 protected:
-	int maxHitPoint;
-	int currentHitPoint;
-	float healTime;
-	float currentHealtTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	float maxHealthPoint = 5.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	float currentHealthPoint = 5.0f;
 	
 };

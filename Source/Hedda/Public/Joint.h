@@ -6,7 +6,7 @@
 #include "Joint.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HEDDA_API UJoint : public UActorComponent
 {
 	GENERATED_BODY()
@@ -19,12 +19,12 @@ protected:
 
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	UFUNCTION(BlueprintCallable, Category = "Joint")
 	void Dismember();
-
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JointRefs")
 	UMember* attachedMember;
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JointRefs")
 	USkeletalMeshComponent* SkeletalMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JointRefs")

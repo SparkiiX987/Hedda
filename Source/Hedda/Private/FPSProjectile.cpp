@@ -1,6 +1,8 @@
 
 #include "FPSProjectile.h"
 #include "BaseCharacter.h"
+#include "Joint.h"
+#include "Member.h"
 
 // Sets default values
 AFPSProjectile::AFPSProjectile()
@@ -73,6 +75,29 @@ void AFPSProjectile::OnImpact(UPrimitiveComponent* _hitComponent, AActor* _other
     if (enemy != nullptr)
     {
         enemy->DealDamage(damage);
+    }
+
+    UJoint* joint = Cast<UJoint>(_otherComponent);
+    UMember* member = nullptr;
+
+    if (joint != nullptr && joint->attachedMember != nullptr)
+    {
+        member = joint->attachedMember;
+        member->TakeDamage(damage);
+
+        if (member->GetHealPoints() <= 0)
+        {
+            joint->Dismember();
+        }
+    }
+    else
+    {
+        member = Cast<UMember>(_otherComponent);
+
+        if (member != nullptr)
+        {
+            member->TakeDamage(damage);
+        }
     }
 
     //Destroy();

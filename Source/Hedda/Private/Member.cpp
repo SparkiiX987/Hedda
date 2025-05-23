@@ -3,48 +3,28 @@
 void UMember::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	Heal(DeltaTime);
 }
 
 UMember::UMember()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
 }
 
-const int UMember::GetHitPoint() const
+const float UMember::GetHealPoints() const
 {
-	return currentHitPoint;
+	return currentHealthPoint;
 }
 
-void UMember::Heal(float _deltaTime)
+void UMember::TakeDamage(float _amount)
 {
-	if (currentHitPoint >= maxHitPoint)
+	if(currentHealthPoint <= 0)
 	{
 		return;
 	}
 
-	if (currentHealtTime < healTime)
-	{
-		currentHealtTime += _deltaTime;
-		return;
-	}
+	currentHealthPoint -= _amount;
 
-	currentHitPoint++;
-	if (currentHitPoint >= maxHitPoint)
-	{
-		currentHitPoint = maxHitPoint;
-		currentHealtTime = 0;
-	}
-}
-
-void UMember::TakeDamage()
-{
-	if(currentHitPoint <= 0)
-	{
-		return;
-	}
-
-	currentHitPoint--;
+	FString messageError = FString::Printf(TEXT("%s has take damage"), *GetOwner()->GetName());
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, messageError);
 }
 
