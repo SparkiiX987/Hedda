@@ -113,7 +113,7 @@ void ABaseCharacter::Attack(int _weapon)
 
 		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
 		FVector forwardVector = forearm->GetForwardVector();
-		FVector spawnLocation = forearm->GetComponentLocation() + forwardVector * 2;
+		FVector spawnLocation = forearm->GetComponentLocation();
 		FRotator forwardRotator = GetMesh()->GetSocketRotation(forarmSocketName);
 
 		for (int i = 0; i < projectileShoot; i++)
