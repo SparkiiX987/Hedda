@@ -7,7 +7,7 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	
 	forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
-	forearm->SetupAttachment(GetMesh());	
+	forearm->SetupAttachment(GetMesh(), TEXT("forearm_rSocket"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -20,22 +20,28 @@ void ABaseCharacter::RotateBody(float _deltaTime)
 {
 	FRotator CurrentControlRot = GetControlRotation();
 
-	float TargetYaw = CurrentControlRot.Yaw + HeadLookOffset.X;
+	float TargetYaw = CurrentControlRot.Yaw + headLookOffset.X;
 
 	FRotator TargetRot(0.f, TargetYaw, 0.f);
-	FRotator SmoothedRot = FMath::RInterpTo(CurrentControlRot, TargetRot, _deltaTime, BodyRotationInterpSpeed);
+	FRotator SmoothedRot = FMath::RInterpTo(CurrentControlRot, TargetRot, _deltaTime, bodyRotationInterpSpeed);
 
 	Controller->SetControlRotation(SmoothedRot);
 
 	float DeltaYaw = FRotator::NormalizeAxis(SmoothedRot.Yaw - CurrentControlRot.Yaw);
-	HeadLookOffset.X -= DeltaYaw;
+	headLookOffset.X -= DeltaYaw;
 }
 
 void ABaseCharacter::RotateHead(FVector2D _rotationOffset)
 {
-	HeadLookOffset += _rotationOffset;
-	FMath::Clamp(HeadLookOffset.X, -60.0f, 60.0f);
-	FMath::Clamp(HeadLookOffset.Y, -40.0f, 15.0f);
+	headLookOffset += _rotationOffset;
+	headLookOffset.X = FMath::Clamp(headLookOffset.X, -60.0f, 60.0f);
+	headLookOffset.Y = FMath::Clamp(headLookOffset.Y, -40.0f, 15.0f);
+}
+
+void ABaseCharacter::RotateArms(float _deltaTime)
+{
+	float TargetPitch = headLookOffset.Y;
+	armLookOffsetPitch = FMath::FInterpTo(armLookOffsetPitch, TargetPitch, _deltaTime, armsRotationInterpSpeed);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -75,7 +81,7 @@ const EFaction ABaseCharacter::GetFaction() const
 
 const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
-	return HeadLookOffset;
+	return headLookOffset;
 }
 
 void ABaseCharacter::FirstAttack()
@@ -105,26 +111,21 @@ void ABaseCharacter::Attack(int _weapon)
 		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
 
 		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
-		FVector forwardVector = GetActorForwardVector();
+		FVector forwardVector = forearm->GetForwardVector();
         FVector spawnLocation = forearm->GetComponentLocation();
+		FRotator forwardRotator = GetMesh()->GetSocketRotation(forarmSocketName);
 
 		for(int i = 0; i < projectileShoot; i++)
 		{
 			if (projectileSpread == 0) 
 			{
-				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, GetActorRotation(), SpawnParams);
-
-				FVector end = spawnLocation + forwardVector * 1000.0f;
-				DrawDebugLine(world, spawnLocation, end, FColor::Green, false, 2.0f, 0, 1.5f);
+				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
 			}
 			else
             {
 				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
 				FRotator spawnRotation = randomDir.Rotation();
 				AActor* projectile = world->SpawnActor<AActor>(ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-
-				FVector end = spawnLocation + randomDir * 1000.0f;
-				DrawDebugLine(world, spawnLocation, end, FColor::Red, false, 2.0f, 0, 1.5f);
             }
 		}
 	}
