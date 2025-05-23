@@ -27,18 +27,17 @@ void UJoint::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 
 void UJoint::Dismember()
 {
-	if(attachedMember->GetHitPoint() > 0)
+	if (!SkeletalMesh || !attachedMember)
 	{
 		return;
 	}
 
-	if (!SkeletalMesh)
-	{
-		return;
-	}
-
+	attachedMember->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	SkeletalMesh->SetSimulatePhysics(true);
 	SkeletalMesh->SetAllBodiesBelowSimulatePhysics(boneName, true, true);
 	SkeletalMesh->SetEnableGravity(true);
+
+	FString messageError = FString::Printf(TEXT("%s has been dismembered"), *boneName.ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, messageError);
 }
 
