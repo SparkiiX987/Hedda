@@ -84,6 +84,7 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 	}
 
 	/*UJoint* joint = Cast<UJoint>(_otherComponent);
+	if (!IsValid(enemy)) return;
 	UMember* member = nullptr;
 
 	if (joint != nullptr && joint->attachedMember != nullptr)
@@ -100,7 +101,7 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 	{
 	    member = Cast<UMember>(_otherComponent);
 
-	    if (member != nullptr)
+	    if (IsValid(enemy))
 	    {
 	        member->TakeDamage(damage);
 	    }
