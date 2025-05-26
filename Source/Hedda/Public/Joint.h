@@ -3,11 +3,12 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Member.h"
+#include "UObject/ObjectPtr.h"
 #include "Joint.generated.h"
 
 
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HEDDA_API UJoint : public UActorComponent
+class HEDDA_API UJoint : public USceneComponent
 {
 	GENERATED_BODY()
 
@@ -21,7 +22,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	UFUNCTION(BlueprintCallable, Category = "Joint")
 	void Dismember();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "JointRefs")
+	UPROPERTY(EditAnyWhere, Category = "JointRefs", meta = (AllowPrivateAccess = "true"))
 	UMember* attachedMember;
 
 protected:
