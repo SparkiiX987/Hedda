@@ -10,13 +10,7 @@
 #include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
 
-UENUM(BlueprintType)
-enum class EFaction : uint8
-{
-	Mage	UMETA(DisplayName = "Mage"),
-	Mecha	UMETA(DisplayName = "Mecha"),
-	Neutral UMETA(DisplayName = "Neutral")
-};
+
 
 UCLASS()
 class HEDDA_API ABaseCharacter : public ACharacter
@@ -46,8 +40,6 @@ public:
 	void DealDamage(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const EFaction GetFaction() const;
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	const FVector2D GetHeadLookOffset() const;
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
@@ -76,8 +68,6 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
-	EFaction faction;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")

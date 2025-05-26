@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,6 +6,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Weapon.h"
 #include "FPSProjectile.generated.h"
+
+class ABaseCharacter;
 
 UCLASS()
 class HEDDA_API AFPSProjectile : public AActor
@@ -30,21 +31,20 @@ public:
     USphereComponent* sphereComponent;
 
     // Projectile movement component
-    UPROPERTY(VisibleAnywhere, Category = Movement)
+    UPROPERTY(VisibleAnywhere, Category = "Movement")
     UProjectileMovementComponent* projectileMovementComponent;
 
-    // Function that initializes the projectile's velocity in the shoot direction.
-	UFUNCTION(BlueprintImplementableEvent, Category = "Projectile")
-    void FireInDirection(const FVector& _shootDirection);
+    UPROPERTY(BlueprintReadWrite, Category = "Player")
+    ABaseCharacter* characterFrom;
 
     // Projectile mesh
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
     UStaticMeshComponent* projectileMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
-	float damage = 20.0f;	
+	float damage = 20.0f;
+    
     // Function that is called when the projectile hits something.
-    UFUNCTION()
-    void OnImpact(UPrimitiveComponent* _hitComponent, AActor* _otherActor, UPrimitiveComponent* _otherComponent, FVector _normalImpulse, const FHitResult& _hit);
-
+    UFUNCTION(BlueprintCallable, Category = "Rotation")
+    void OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent);
 };

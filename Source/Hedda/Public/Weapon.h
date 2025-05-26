@@ -5,6 +5,8 @@
 #include "Engine/DataAsset.h"
 #include "Weapon.generated.h"
 
+class AFPSProjectile;
+
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
@@ -37,5 +39,5 @@ class HEDDA_API UWeapon : public UDataAsset
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 		UNiagaraSystem* muzzleParticle;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		TSubclassOf<AActor> projectile;
+		TSubclassOf<AFPSProjectile> projectile;
 };
