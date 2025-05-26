@@ -117,6 +117,8 @@ void ABaseCharacter::Attack(int _weapon)
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
+				if (projectile == nullptr) { return; }
+				projectile->characterFrom = this;
 			}
 			else
 			{
@@ -124,6 +126,8 @@ void ABaseCharacter::Attack(int _weapon)
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+				if (projectile == nullptr) { return; }
+				projectile->characterFrom = this;
 			}
 		}
 	}
