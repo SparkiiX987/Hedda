@@ -75,11 +75,6 @@ void ABaseCharacter::Heal(float _amount)
 	}
 }
 
-const EFaction ABaseCharacter::GetFaction() const
-{
-	return faction;
-}
-
 const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
 	return headLookOffset;
@@ -122,10 +117,6 @@ void ABaseCharacter::Attack(int _weapon)
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
-				if (projectile != nullptr)
-				{
-					projectile->faction = faction;
-				}
 			}
 			else
 			{
@@ -133,10 +124,6 @@ void ABaseCharacter::Attack(int _weapon)
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-				if (projectile != nullptr)
-				{
-					projectile->faction = faction;
-				}
 			}
 		}
 	}
