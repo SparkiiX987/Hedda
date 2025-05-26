@@ -4,7 +4,6 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
-#include "EFaction.h"
 #include "Joint.h"
 #include "Member.h"
 #include "Weapon.h"
@@ -41,8 +40,6 @@ public:
 	void DealDamage(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const EFaction GetFaction() const;
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	const FVector2D GetHeadLookOffset() const;
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
@@ -71,8 +68,6 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
-	EFaction faction;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")

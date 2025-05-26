@@ -76,12 +76,6 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 	if (!IsValid(enemy)) return;
 
 	enemy->DealDamage(damage);
-	
-	if (enemy->GetFaction() == faction)
-	{
-		Destroy();
-		return;
-	}
 
 	/*UJoint* joint = Cast<UJoint>(_otherComponent);
 	if (!IsValid(enemy)) return;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EFaction.h"
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -44,11 +43,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
 	float damage = 20.0f;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
-    EFaction faction;
     
     // Function that is called when the projectile hits something.
     UFUNCTION(BlueprintCallable, Category = "Rotation")
     void OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent);
-
 };
