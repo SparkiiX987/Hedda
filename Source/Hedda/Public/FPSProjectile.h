@@ -7,6 +7,7 @@
 #include "Weapon.h"
 #include "FPSProjectile.generated.h"
 
+class ABaseCharacter;
 
 UCLASS()
 class HEDDA_API AFPSProjectile : public AActor
@@ -30,12 +31,11 @@ public:
     USphereComponent* sphereComponent;
 
     // Projectile movement component
-    UPROPERTY(VisibleAnywhere, Category = Movement)
+    UPROPERTY(VisibleAnywhere, Category = "Movement")
     UProjectileMovementComponent* projectileMovementComponent;
 
-    // Function that initializes the projectile's velocity in the shoot direction.
-	UFUNCTION(BlueprintImplementableEvent, Category = "Projectile")
-    void FireInDirection(const FVector& _shootDirection);
+    UPROPERTY(BlueprintReadWrite, Category = "Player")
+    ABaseCharacter* characterFrom;
 
     // Projectile mesh
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
