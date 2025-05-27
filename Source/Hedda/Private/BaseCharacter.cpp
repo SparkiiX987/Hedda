@@ -5,9 +5,9 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
-
-	forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
-	forearm->SetupAttachment(GetMesh(), TEXT("forearm_rSocket"));
+	
+	// forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
+	// forearm->SetupAttachment(GetMesh(), TEXT("forearm_rSocket"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -26,7 +26,7 @@ void ABaseCharacter::RotateBody(float _deltaTime)
 	FRotator TargetRot(0.f, TargetYaw, 0.f);
 	FRotator SmoothedRot = FMath::RInterpTo(CurrentControlRot, TargetRot, _deltaTime, bodyRotationInterpSpeed);
 
-	Controller->SetControlRotation(SmoothedRot);
+		Controller->SetControlRotation(SmoothedRot);
 
 	float DeltaYaw = FRotator::NormalizeAxis(SmoothedRot.Yaw - CurrentControlRot.Yaw);
 	headLookOffset.X -= DeltaYaw;
@@ -58,10 +58,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ABaseCharacter::DealDamage(float _amount)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("caca"));
 	healPoint -= _amount;
 	if (healPoint <= 0)
-	{
+	{		
 		Death();
 	}
 }
@@ -75,6 +74,7 @@ void ABaseCharacter::Heal(float _amount)
 	}
 }
 
+
 const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
 	return headLookOffset;
@@ -82,7 +82,7 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 
 void ABaseCharacter::FirstAttack()
 {
-	Attack(0);
+	Attack(0);	
 }
 
 void ABaseCharacter::SecondAttack()
@@ -102,32 +102,32 @@ void ABaseCharacter::Attack(int _weapon)
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = GetInstigator();
 
-		TSubclassOf<AFPSProjectile> ProjectileClass = weapons[_weapon]->projectile;
+		TSubclassOf<AActor> ProjectileClass = weapons[_weapon]->projectile;
 		float projectileSpread = FMath::Clamp(weapons[_weapon]->spread, 0.0f, 100.0f);
 		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
 
 		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
-		FVector forwardVector = forearm->GetForwardVector();
-		FVector spawnLocation = forearm->GetComponentLocation();
+		// FVector forwardVector = forearm->GetForwardVector();
+  //       FVector spawnLocation = forearm->GetComponentLocation();
 		FRotator forwardRotator = GetMesh()->GetSocketRotation(forarmSocketName);
 
-		for (int i = 0; i < projectileShoot; i++)
+		for(int i = 0; i < projectileShoot; i++)
 		{
-			if (projectileSpread == 0)
+			if (projectileSpread == 0) 
 			{
-				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
-				if (projectile == nullptr) { return; }
-				projectile->characterFrom = this;
+				// AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+				// 	ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
+				// if (projectile == nullptr) { return; }
+				// projectile->characterFrom = this;
 			}
 			else
-			{
-				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
-				FRotator spawnRotation = randomDir.Rotation();
-				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-				if (projectile == nullptr) { return; }
-				projectile->characterFrom = this;
+            {
+				// FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
+				// FRotator spawnRotation = randomDir.Rotation();
+				// AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+				// 	ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+				// if (projectile == nullptr) { return; }
+				// projectile->characterFrom = this;
 			}
 		}
 	}
