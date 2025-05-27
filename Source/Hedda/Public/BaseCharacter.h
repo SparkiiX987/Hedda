@@ -4,7 +4,6 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
-#include "Joint.h"
 #include "Member.h"
 #include "Weapon.h"
 #include "FPSProjectile.h"
@@ -68,14 +67,12 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "CharacterVariables")
 	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* projectileSpawnPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UJoint*> joints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
 };

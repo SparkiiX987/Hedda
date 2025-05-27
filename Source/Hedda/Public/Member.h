@@ -1,29 +1,33 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Components/PrimitiveComponent.h"
+#include <Components/CapsuleComponent.h>
 #include "Member.generated.h"
 
-UCLASS()
-class HEDDA_API UMember : public USkeletalMeshComponent
+UCLASS(Blueprintable, BlueprintType)
+class HEDDA_API UMember : public UPrimitiveComponent
 {
 	GENERATED_BODY()
 	
-public:
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	UMember();
-
-	UFUNCTION(BlueprintCallable)
-	const float GetHealPoints() const;
-
-	UFUNCTION(BlueprintCallable)
-	void TakeDamage(float _amount);
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
-	float maxHealthPoint = 5.0f;
-
+	float maxHitPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
-	float currentHealthPoint = 5.0f;
-	
+	float currentHitPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	FName AttachedBoneName;
+	UPROPERTY(EditAnywhere, Category = "Member")
+	UCapsuleComponent* Collider;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	bool bCanBeDismembered;
+
+public:
+	UMember();
+	UFUNCTION(BlueprintCallable, Category = "Member")
+	void TakeDamage(float _amount);
+	UFUNCTION(BlueprintCallable, Category = "Member")
+	const float GetHealPoints() const;
+	UFUNCTION(BlueprintCallable, Category = "Member")
+	void Dismember();	
 };

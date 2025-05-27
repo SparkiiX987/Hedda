@@ -1,7 +1,7 @@
 #include "FPSProjectile.h"
 #include "BaseCharacter.h"
-#include "Joint.h"
-#include "Member.h"
+//#include "Joint.h"
+//#include "Member.h"
 
 
 // Sets default values
@@ -71,33 +71,32 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 {
 	if (!IsValid(_otherActor) || !IsValid(_otherComponent)) return;
 
-	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("avant caca"));
 	ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
 	if (!IsValid(enemy)) return;
 
 	enemy->DealDamage(damage);
 
-	/*UJoint* joint = Cast<UJoint>(_otherComponent);
-	if (!IsValid(enemy)) return;
-	UMember* member = nullptr;
-
-	if (joint != nullptr && joint->attachedMember != nullptr)
+	if (_otherComponent == nullptr) 
 	{
-	    member = joint->attachedMember;
+		return;
+	}
+
+	UMember* member = Cast<UMember>(_otherComponent);
+	if (!IsValid(member))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Member Not Valid"));
+		return;
+	}
+	
+	if (IsValid(member))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("MemberValid"));
 	    member->TakeDamage(damage);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Take damage from bullet"));
 
 	    if (member->GetHealPoints() <= 0)
 	    {
-	        joint->Dismember();
+			member->Dismember();
 	    }
 	}
-	else
-	{
-	    member = Cast<UMember>(_otherComponent);
-
-	    if (IsValid(enemy))
-	    {
-	        member->TakeDamage(damage);
-	    }
-	}*/
 }

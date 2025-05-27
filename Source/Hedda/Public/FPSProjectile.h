@@ -41,9 +41,9 @@ public:
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
     UStaticMeshComponent* projectileMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
 	float damage = 20.0f;
-    
+
     // Function that is called when the projectile hits something.
     UFUNCTION(BlueprintCallable, Category = "Rotation")
     void OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent);

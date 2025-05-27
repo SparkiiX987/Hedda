@@ -1,30 +1,24 @@
 #include "Member.h"
 
-void UMember::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
 UMember::UMember()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-}
-
-const float UMember::GetHealPoints() const
-{
-	return currentHealthPoint;
+	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
+	Collider->SetupAttachment(this);
+	SetCollisionProfileName(TEXT("Member"));
 }
 
 void UMember::TakeDamage(float _amount)
 {
-	if(currentHealthPoint <= 0)
-	{
-		return;
-	}
-
-	currentHealthPoint -= _amount;
-
-	FString messageError = FString::Printf(TEXT("%s has take damage"), *GetOwner()->GetName());
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, messageError);
+	currentHitPoint -= _amount;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Called TakeDamage()"));
 }
 
+const float UMember::GetHealPoints() const
+{
+	return currentHitPoint;
+}
+
+void UMember::Dismember()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Called Dismember"));
+}
