@@ -56,16 +56,6 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ABaseCharacter::DealDamage(float _amount)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("caca"));
-	healPoint -= _amount;
-	if (healPoint <= 0)
-	{
-		Death();
-	}
-}
-
 void ABaseCharacter::Heal(float _amount)
 {
 	healPoint += _amount;

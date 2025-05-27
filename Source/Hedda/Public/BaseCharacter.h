@@ -11,7 +11,6 @@
 #include "BaseCharacter.generated.h"
 
 
-
 UCLASS()
 class HEDDA_API ABaseCharacter : public ACharacter
 {
@@ -22,7 +21,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterFunction")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
 	void Death();
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateBody(float _deltaTime);
@@ -31,12 +30,12 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateArms(float _deltaTime);
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
 	void DealDamage(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
