@@ -8,7 +8,6 @@
 UBTC_SelectRandom::UBTC_SelectRandom()
 {
 	NodeName = "Random Choice 50/50";
-	
 }
 
 int32 UBTC_SelectRandom::GetNextChildHandler(FBehaviorTreeSearchData& SearchData, int32 PrevChild, EBTNodeResult::Type LastResult) const
@@ -17,8 +16,6 @@ int32 UBTC_SelectRandom::GetNextChildHandler(FBehaviorTreeSearchData& SearchData
 	{
 		// 1 chance sur 2 : 0 ou 1
 		const int32 RandomIndex = FMath::RandRange(0, GetChildrenNum() - 1);
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, FString::Printf(TEXT("RandomIndex generated: %d"), RandomIndex));
 		return FMath::Clamp(RandomIndex, 0, GetChildrenNum() - 1);
 	}
 
