@@ -6,8 +6,8 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	
-	forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
-	forearm->SetupAttachment(GetMesh(), TEXT("forearm_rSocket"));
+	// forearm = CreateDefaultSubobject<UMember>(TEXT("Right Forearm"));
+	// forearm->SetupAttachment(GetMesh(), TEXT("forearm_rSocket"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -107,27 +107,27 @@ void ABaseCharacter::Attack(int _weapon)
 		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
 
 		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
-		FVector forwardVector = forearm->GetForwardVector();
-        FVector spawnLocation = forearm->GetComponentLocation();
+		// FVector forwardVector = forearm->GetForwardVector();
+  //       FVector spawnLocation = forearm->GetComponentLocation();
 		FRotator forwardRotator = GetMesh()->GetSocketRotation(forarmSocketName);
 
 		for(int i = 0; i < projectileShoot; i++)
 		{
 			if (projectileSpread == 0) 
 			{
-				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
-				if (projectile == nullptr) { return; }
-				projectile->characterFrom = this;
+				// AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+				// 	ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
+				// if (projectile == nullptr) { return; }
+				// projectile->characterFrom = this;
 			}
 			else
             {
-				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
-				FRotator spawnRotation = randomDir.Rotation();
-				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-				if (projectile == nullptr) { return; }
-				projectile->characterFrom = this;
+				// FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
+				// FRotator spawnRotation = randomDir.Rotation();
+				// AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+				// 	ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+				// if (projectile == nullptr) { return; }
+				// projectile->characterFrom = this;
 			}
 		}
 	}

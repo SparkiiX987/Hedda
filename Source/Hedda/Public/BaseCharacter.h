@@ -70,8 +70,8 @@ protected:
 	float bodyRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UMember* forearm;
+	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	// UMember* forearm;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
