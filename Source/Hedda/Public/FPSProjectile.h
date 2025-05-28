@@ -31,7 +31,7 @@ public:
     USphereComponent* sphereComponent;
 
     // Projectile movement component
-    UPROPERTY(VisibleAnywhere, Category = "Movement")
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Movement")
     UProjectileMovementComponent* projectileMovementComponent;
 
     UPROPERTY(BlueprintReadWrite, Category = "Player")

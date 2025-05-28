@@ -45,8 +45,6 @@ public:
 	void FirstAttack();
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void SecondAttack();
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void Attack(int _weapon);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
@@ -55,7 +53,7 @@ protected:
 	float bodyRotationInterpSpeed = 6.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
 	float armsRotationInterpSpeed = 6.f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")	
 	float armLookOffsetPitch;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float maxHealPoint;
@@ -70,11 +68,16 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USceneComponent* projectileSpawnPoint;
+	USceneComponent* lightProjectileSpawnPoint;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* heavyProjectileSpawnPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UJoint*> joints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	TSubclassOf<AFPSProjectile> targetingBeacon;
 };
