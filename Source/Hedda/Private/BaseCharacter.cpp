@@ -56,16 +56,6 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ABaseCharacter::DealDamage(float _amount)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("caca"));
-	healPoint -= _amount;
-	if (healPoint <= 0)
-	{
-		Death();
-	}
-}
-
 void ABaseCharacter::Heal(float _amount)
 {
 	healPoint += _amount;
@@ -111,9 +101,9 @@ void ABaseCharacter::Attack(int _weapon)
         FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
 		FRotator forwardRotator = forwardVector.Rotation();
 
-		for (int i = 0; i < projectileShoot; i++)
+		for(int i = 0; i < projectileShoot; i++)
 		{
-			if (projectileSpread == 0)
+			if (projectileSpread == 0) 
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 				ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
@@ -121,7 +111,7 @@ void ABaseCharacter::Attack(int _weapon)
 				projectile->characterFrom = this;
 			}
 			else
-			{
+            {
 				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(

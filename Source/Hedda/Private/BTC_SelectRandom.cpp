@@ -15,7 +15,7 @@ int32 UBTC_SelectRandom::GetNextChildHandler(FBehaviorTreeSearchData& SearchData
 	if (PrevChild == INDEX_NONE)
 	{
 		// 1 chance sur 2 : 0 ou 1
-		const int32 RandomIndex = FMath::RandRange(0, 1);
+		const int32 RandomIndex = FMath::RandRange(0, GetChildrenNum() - 1);
 		return FMath::Clamp(RandomIndex, 0, GetChildrenNum() - 1);
 	}
 
