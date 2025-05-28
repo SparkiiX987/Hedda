@@ -75,4 +75,21 @@ protected:
 	FName forarmSocketName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
+
+	//Members
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* headMember;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* cabineMember;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* batteryMember;	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* leftArmMember;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* rightArmMember;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* leftForearmMember;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
+	UMember* rightForearmMember;
+
 };

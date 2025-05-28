@@ -17,13 +17,15 @@ protected:
 	float currentHitPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	FName AttachedBoneName;
-	UPROPERTY(EditAnywhere, Category = "Member")
-	UCapsuleComponent* Collider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	bool bCanBeDismembered;
 
 public:
 	UMember();
+
+	UPROPERTY(EditAnywhere, Category = "Member")
+	UCapsuleComponent* Collider;
+
 	UFUNCTION(BlueprintCallable, Category = "Member")
 	void TakeDamage(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "Member")
