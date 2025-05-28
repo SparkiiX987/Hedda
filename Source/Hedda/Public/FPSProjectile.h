@@ -43,6 +43,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
 	float damage = 20.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+	float size = 10.0f;
     
     // Function that is called when the projectile hits something.
     UFUNCTION(BlueprintCallable, Category = "Rotation")
