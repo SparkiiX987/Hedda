@@ -36,7 +36,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
-	void DealDamage(float _amount);
+	void DealDamage(float _amount); 
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
