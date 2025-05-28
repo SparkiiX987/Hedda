@@ -35,7 +35,7 @@ public:
     UProjectileMovementComponent* projectileMovementComponent;
 
     UPROPERTY(BlueprintReadWrite, Category = "Player")
-    ABaseCharacter* characterFrom;
+    AActor* characterFrom;
 
     // Projectile mesh
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
