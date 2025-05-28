@@ -59,6 +59,7 @@ AFPSProjectile::AFPSProjectile()
 void AFPSProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	sphereComponent->SetRelativeScale3D(GetActorRelativeScale3D() * size);
 }
 
 // Called every frame
