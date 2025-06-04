@@ -69,15 +69,12 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UMember*> members;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* lightProjectileSpawnPoint;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* heavyProjectileSpawnPoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	USceneComponent* projectileSpawnPoint;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
