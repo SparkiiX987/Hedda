@@ -1,7 +1,5 @@
 #include "FPSProjectile.h"
 #include "BaseCharacter.h"
-#include "Joint.h"
-#include "Member.h"
 
 
 // Sets default values
@@ -72,33 +70,9 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 {
 	if (!IsValid(_otherActor) || !IsValid(_otherComponent)) return;
 
-	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("avant caca"));
 	ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
-	if (!IsValid(enemy)) return;
-
-	enemy->DealDamage(damage);
-
-	/*UJoint* joint = Cast<UJoint>(_otherComponent);
-	if (!IsValid(enemy)) return;
-	UMember* member = nullptr;
-
-	if (joint != nullptr && joint->attachedMember != nullptr)
+	if (IsValid(enemy))
 	{
-	    member = joint->attachedMember;
-	    member->TakeDamage(damage);
-
-	    if (member->GetHealPoints() <= 0)
-	    {
-	        joint->Dismember();
-	    }
+		enemy->DealDamage(damage);
 	}
-	else
-	{
-	    member = Cast<UMember>(_otherComponent);
-
-	    if (IsValid(enemy))
-	    {
-	        member->TakeDamage(damage);
-	    }
-	}*/
 }
