@@ -1,4 +1,6 @@
 #include "BaseCharacter.h"
+#include "MemberFinal.h"
+#include "Components/ShapeComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -9,52 +11,19 @@ ABaseCharacter::ABaseCharacter()
 	projectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
 	projectileSpawnPoint->SetupAttachment(GetMesh(),"ProjectilesSocket");
 
-	//Head
-	headMember = CreateDefaultSubobject<UMember>(TEXT("Head"));
-	headMember->SetupAttachment(GetMesh(), "HeadSocket");
-	headMember->SetRelativeLocation(FVector(0.0f, 0.0f, 125.0f));
-	headMember->Collider->SetWorldScale3D(FVector(0.0f, 0.0f, 0.5f));
+	for (int i = 0; i < 7; i++) {
+		UChildActorComponent* member = CreateDefaultSubobject<UChildActorComponent>(FName(*FString::Printf(TEXT("MemberFinal_%d"), i)));
+		member->SetChildActorClass(AMemberFinal::StaticClass());
+		membersFinals.Add(member);
+	}
 
-	//Battery
-	batteryMember = CreateDefaultSubobject<UMember>(TEXT("Battery"));
-	batteryMember->SetupAttachment(GetMesh(), "BatterySocket");
-	batteryMember->SetRelativeLocation(FVector(-100.0f, 0.0f, 35.0f));
-	batteryMember->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
-	batteryMember->Collider->SetWorldScale3D(FVector(1.0f, 1.0f, 1.03f));
-
-	//Cabine
-	cabineMember = CreateDefaultSubobject<UMember>(TEXT("Cabine"));
-	cabineMember->SetupAttachment(GetMesh(), "CabineSocket");
-	cabineMember->Collider->SetWorldScale3D(FVector(6.5f, 10.0f, 5.5f));
-
-	//Arms
-	//Left arm
-	leftArmMember = CreateDefaultSubobject<UMember>(TEXT("LeftArm"));
-	leftArmMember->SetupAttachment(GetMesh(), "LeftArmSocket");
-	leftArmMember->SetRelativeLocation(FVector(16.0f, 90.0f, 140.0f));
-	leftArmMember->SetRelativeRotation(FRotator(0.0f, 0.0f, 60.0f));
-	leftArmMember->Collider->SetWorldScale3D(FVector(1.0f, 2.0f, 1.5f));
-
-	//Left Forearm	
-	leftForearmMember = CreateDefaultSubobject<UMember>(TEXT("LeftForearm"));
-	leftForearmMember->SetupAttachment(GetMesh(), "ForearmLeftSocket");
-	leftForearmMember->SetRelativeLocation(FVector(140.0f, 90.0f, 140.0f));
-	leftForearmMember->SetRelativeRotation(FRotator(0.0f, 0.0f, 100.0f));
-	leftForearmMember->Collider->SetWorldScale3D(FVector(1.0f, 2.0f, 1.5f));
-
-	//Right arm
-	rightArmMember = CreateDefaultSubobject<UMember>(TEXT("RightArm"));
-	rightArmMember->SetupAttachment(GetMesh(), "RightArmSocket");
-	rightArmMember->SetRelativeLocation(FVector(16.0f, -90.0f, 140.0f));
-	rightArmMember->SetRelativeRotation(FRotator(0.0f, 0.0f, 60.0f));
-	rightArmMember->Collider->SetWorldScale3D(FVector(1.0f, 2.0f, 1.5f));
-
-	//Right Forearm	
-	rightForearmMember = CreateDefaultSubobject<UMember>(TEXT("RightForearm"));
-	rightForearmMember->SetupAttachment(GetMesh(), "ForearmRightSocket");
-	rightForearmMember->SetRelativeLocation(FVector(140.0f, -90.0f, 140.0f));
-	rightForearmMember->SetRelativeRotation(FRotator(0.0f, 0.0f, 100.0f));
-	rightForearmMember->Collider->SetWorldScale3D(FVector(1.0f, 2.0f, 1.5f));
+	InitializeCollider("CabineSocket", "cabin", 0, 20, false, false, false);
+	InitializeCollider("BatterySocket", "backdoor_tube_1", 1, 5, false, false, false);
+	InitializeCollider("HeadSocket", "headbone", 2, 1, false, false, false);
+	InitializeCollider("LeftArmSocket", "arm_r", 3, 5, true, true, false);
+	InitializeCollider("ForearmLeftSocket", "forearm_r", 4, 5, true, false, true);
+	InitializeCollider("RightArmSocket", "arm_l", 5, 5, true, true, false);
+	InitializeCollider("ForearmRightSocket", "forearm_l", 6, 5, true, false, true);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -178,4 +147,9 @@ void ABaseCharacter::Attack(int _weapon)
 			}
 		}
 	}
+}
+
+void ABaseCharacter::InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed)
+{
+	membersFinals[_index]->SetupAttachment(GetMesh(), _socketName);
 }

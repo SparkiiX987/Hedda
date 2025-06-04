@@ -4,7 +4,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
-#include "Member.h"
+#include "MemberTest.h"
 #include "Weapon.h"
 #include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
@@ -30,7 +30,15 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateArms(float _deltaTime);
 
+	void InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed);
+
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<TObjectPtr<UChildActorComponent>> membersFinals;
+	/*
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<TObjectPtr<UChildActorComponent>> membersTest;*/
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -67,29 +75,11 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "CharacterVariables")
-	TArray<UMember*> members;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	USceneComponent* projectileSpawnPoint;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
-
-	//Members
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* headMember;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* cabineMember;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* batteryMember;	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* leftArmMember;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* rightArmMember;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* leftForearmMember;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Members")
-	UMember* rightForearmMember;
-
 };
