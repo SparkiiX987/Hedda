@@ -54,6 +54,8 @@ void AMemberFinal::Dismember()
 
 		bodyMesh->BreakConstraint(Impulse, HitLocation, AttachedBoneName);
 
+		if (!IsValid(memberMainStaticMesh)) { return; }
+
 		memberMainStaticMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		memberMainStaticMesh->SetSimulatePhysics(true);
 		memberMainStaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
