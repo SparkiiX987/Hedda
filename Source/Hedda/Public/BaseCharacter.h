@@ -4,8 +4,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
-#include "Joint.h"
-#include "Member.h"
+#include "MemberTest.h"
 #include "Weapon.h"
 #include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
@@ -29,8 +28,13 @@ protected:
 	void RotateHead(FVector2D _rotationOffset);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateArms(float _deltaTime);
+	
+	void InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed);
 
-public:
+public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<TObjectPtr<UChildActorComponent>> membersFinals;
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -67,14 +71,11 @@ protected:
 	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float bodyRotationSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UMember*> members;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	USceneComponent* projectileSpawnPoint;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
 	FName forarmSocketName;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UJoint*> joints;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
 	TArray<UWeapon*> weapons;
 };

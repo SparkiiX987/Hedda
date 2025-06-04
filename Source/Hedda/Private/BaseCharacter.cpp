@@ -1,4 +1,6 @@
 #include "BaseCharacter.h"
+#include "MemberFinal.h"
+#include "Components/ShapeComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -8,6 +10,20 @@ ABaseCharacter::ABaseCharacter()
 
 	projectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
 	projectileSpawnPoint->SetupAttachment(GetMesh(),"ProjectilesSocket");
+
+	for (int i = 0; i < 7; i++) {
+		UChildActorComponent* member = CreateDefaultSubobject<UChildActorComponent>(FName(*FString::Printf(TEXT("MemberFinal_%d"), i)));
+		member->SetChildActorClass(AMemberFinal::StaticClass());
+		membersFinals.Add(member);
+	}
+
+	InitializeCollider("CabineSocket", "cabin", 0, 20, false, false, false);
+	InitializeCollider("BatterySocket", "backdoor_tube_1", 1, 5, false, false, false);
+	InitializeCollider("HeadSocket", "headbone", 2, 1, false, false, false);
+	InitializeCollider("LeftArmSocket", "arm_r", 3, 5, true, true, false);
+	InitializeCollider("ForearmLeftSocket", "forearm_r", 4, 5, true, false, true);
+	InitializeCollider("RightArmSocket", "arm_l", 5, 5, true, true, false);
+	InitializeCollider("ForearmRightSocket", "forearm_l", 6, 5, true, false, true);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -121,4 +137,9 @@ void ABaseCharacter::Attack(int _weapon)
 			}
 		}
 	}
+}
+
+void ABaseCharacter::InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed)
+{
+	membersFinals[_index]->SetupAttachment(GetMesh(), _socketName);
 }
