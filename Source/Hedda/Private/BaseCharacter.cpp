@@ -8,8 +8,11 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
-	projectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
-	projectileSpawnPoint->SetupAttachment(GetMesh(),"ProjectilesSocket");
+	lightProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("lightProjectileSpawnPoint"));
+	lightProjectileSpawnPoint->SetupAttachment(GetMesh(),"lightProjectilesSocket");
+
+	heavyProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("heavyProjectileSpawnPoint"));
+	heavyProjectileSpawnPoint->SetupAttachment(GetMesh(), "heavyProjectilesSocket");
 
 	for (int i = 0; i < 7; i++) {
 		UChildActorComponent* member = CreateDefaultSubobject<UChildActorComponent>(FName(*FString::Printf(TEXT("MemberFinal_%d"), i)));
@@ -88,54 +91,67 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 
 void ABaseCharacter::FirstAttack()
 {
-	Attack(0);
-}
-
-void ABaseCharacter::SecondAttack()
-{
-	Attack(1);
-}
-
-void ABaseCharacter::Attack(int _weapon)
-{
 	UWorld* world = GetWorld();
 
 	if (!world) return;
 
-	if (weapons.Num() > 0 && weapons[_weapon] && weapons[_weapon]->projectile)
+	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = GetInstigator();
 
-		TSubclassOf<AFPSProjectile> ProjectileClass = weapons[_weapon]->projectile;
-		float projectileSpread = FMath::Clamp(weapons[_weapon]->spread, 0.0f, 100.0f);
-		float projectileShoot = FMath::Clamp(weapons[_weapon]->bulletNumber, 0.0f, 100.0f);
+		TSubclassOf<AFPSProjectile> ProjectileClass = weapons[0]->projectile;
+		float projectileSpread = FMath::Clamp(weapons[0]->spread, 0.0f, 100.0f);
+		float projectileShoot = FMath::Clamp(weapons[0]->bulletNumber, 0.0f, 100.0f);
 
 		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
-		FVector forwardVector = projectileSpawnPoint->GetForwardVector();
-        FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
+		FVector forwardVector = lightProjectileSpawnPoint->GetForwardVector();
+		FVector spawnLocation = lightProjectileSpawnPoint->GetComponentLocation();
 		FRotator forwardRotator = forwardVector.Rotation();
 
-		for(int i = 0; i < projectileShoot; i++)
+		for (int i = 0; i < projectileShoot; i++)
 		{
-			if (projectileSpread == 0) 
+			if (projectileSpread == 0)
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-				ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
+					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
 				if (projectile == nullptr) { return; }
 				projectile->characterFrom = this;
 			}
 			else
-            {
+			{
 				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
-				ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
 				if (projectile == nullptr) { return; }
 				projectile->characterFrom = this;
 			}
 		}
+	}
+}
+
+void ABaseCharacter::SecondAttack()
+{
+	UWorld* world = GetWorld();
+
+	if (!world) return;
+
+	if (weapons.Num() > 0 && weapons[1] && targetingBeacon != nullptr) 
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+				
+		FVector forwardVector = lightProjectileSpawnPoint->GetForwardVector();
+		FVector spawnLocation = lightProjectileSpawnPoint->GetComponentLocation();
+		FRotator forwardRotator = forwardVector.Rotation();
+
+		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+			targetingBeacon, spawnLocation, forwardRotator, SpawnParams);
+		if (projectile == nullptr) { return; }
+		projectile->characterFrom = this;
 	}
 }
 
