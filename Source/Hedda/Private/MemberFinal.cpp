@@ -44,13 +44,8 @@ void AMemberFinal::Dismember()
 {
 	if (bCanBeDismembered)
 	{
-		/*if (bCanBeDismembered && IsValid(secondMember))
-		{
-			secondMember->Dismember();
-		}*/
-
 		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Dismembering %s"), *AttachedBoneName.ToString()));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Dismembering %s"), *bodyMesh->SkeletalMesh->GetName()));
 
 		bCanBeUsed = false;
 	}
