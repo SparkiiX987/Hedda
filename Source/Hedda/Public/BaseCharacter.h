@@ -29,7 +29,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateArms(float _deltaTime);
 	
-	void InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed);
+	void InitializeCollider(FName _socketName, int _index);
 
 public:	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

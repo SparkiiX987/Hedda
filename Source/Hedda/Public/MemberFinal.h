@@ -26,12 +26,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	USkeletalMeshComponent* bodyMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
-	UStaticMeshComponent* memberMainStaticMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
-	AMemberFinal* secondMember;
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UShapeComponent* Collision;
