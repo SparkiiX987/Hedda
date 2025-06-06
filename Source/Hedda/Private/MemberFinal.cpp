@@ -44,23 +44,13 @@ void AMemberFinal::Dismember()
 {
 	if (bCanBeDismembered)
 	{
-		FVector Impulse = FVector(0.0f, 0.0f, 0.0f);
-		FVector HitLocation = GetActorLocation();
-
-		if (bCanBeDismembered && IsValid(secondMember))
+		/*if (bCanBeDismembered && IsValid(secondMember))
 		{
 			secondMember->Dismember();
-		}
+		}*/
 
-		bodyMesh->BreakConstraint(Impulse, HitLocation, AttachedBoneName);
-
-		if (!IsValid(memberMainStaticMesh)) { return; }
-
-		memberMainStaticMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		memberMainStaticMesh->SetSimulatePhysics(true);
-		memberMainStaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		memberMainStaticMesh->SetEnableGravity(true);
-		bodyMesh->SetAllBodiesBelowSimulatePhysics(AttachedBoneName, true, true);
+		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Dismembering %s"), *AttachedBoneName.ToString()));
 
 		bCanBeUsed = false;
 	}

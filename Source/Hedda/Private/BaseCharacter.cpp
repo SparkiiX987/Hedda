@@ -20,13 +20,13 @@ ABaseCharacter::ABaseCharacter()
 		membersFinals.Add(member);
 	}
 
-	InitializeCollider("CabineSocket", "cabin", 0, 20, false, false, false);
-	InitializeCollider("BatterySocket", "backdoor_tube_1", 1, 5, false, false, false);
-	InitializeCollider("HeadSocket", "headbone", 2, 1, false, false, false);
-	InitializeCollider("LeftArmSocket", "arm_r", 3, 5, true, true, false);
-	InitializeCollider("ForearmLeftSocket", "forearm_r", 4, 5, true, false, true);
-	InitializeCollider("RightArmSocket", "arm_l", 5, 5, true, true, false);
-	InitializeCollider("ForearmRightSocket", "forearm_l", 6, 5, true, false, true);
+	InitializeCollider("CabineSocket", 0);
+	InitializeCollider("BatterySocket", 1);
+	InitializeCollider("HeadSocket", 2);
+	InitializeCollider("LeftArmSocket", 3);
+	InitializeCollider("ForearmLeftSocket", 4);
+	InitializeCollider("RightArmSocket", 5);
+	InitializeCollider("ForearmRightSocket", 6);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -155,7 +155,7 @@ void ABaseCharacter::SecondAttack()
 	}
 }
 
-void ABaseCharacter::InitializeCollider(FName _socketName, FName _boneName, int _index, float _maxHitPoints, bool _bCanBeDismember, bool _bAttachedToMember, bool _bCanBeUsed)
+void ABaseCharacter::InitializeCollider(FName _socketName, int _index)
 {
 	membersFinals[_index]->SetupAttachment(GetMesh(), _socketName);
 }

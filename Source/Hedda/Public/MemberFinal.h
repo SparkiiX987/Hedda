@@ -27,9 +27,6 @@ public:
 	USkeletalMeshComponent* bodyMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
-	UStaticMeshComponent* memberMainStaticMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	AMemberFinal* secondMember;
 
 protected:
