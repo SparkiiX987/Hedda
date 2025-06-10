@@ -41,7 +41,10 @@ public:
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
     UStaticMeshComponent* projectileMesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+    float maxSpeed = 0.0f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
+    float initialSpeed = 0.0f;
 	float damage = 20.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
 	float size = 10.0f;
