@@ -73,6 +73,6 @@ void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _
 	ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
 	if (IsValid(enemy))
 	{
-		enemy->DealDamage(damage);
+		enemy->DealDamage(damage);s
 	}
 }
