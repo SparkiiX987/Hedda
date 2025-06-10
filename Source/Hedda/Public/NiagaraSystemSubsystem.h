@@ -18,6 +18,7 @@ class HEDDA_API UNiagaraSystemSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 	public :
+
 		UFUNCTION(BlueprintCallable, Category = "NiagaraSystem")
 		void PlayParticle(FName _particleName, FVector _location, FRotator _rotation, USceneComponent* _parentComponent);
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NiagaraSystem")
