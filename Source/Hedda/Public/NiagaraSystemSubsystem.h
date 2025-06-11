@@ -23,4 +23,6 @@ class HEDDA_API UNiagaraSystemSubsystem : public UGameInstanceSubsystem
 		void PlayParticle(FName _particleName, FVector _location, FRotator _rotation, USceneComponent* _parentComponent);
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NiagaraSystem")
 		UParticleBank* ParticleBank;
+
+		void Initialize(FSubsystemCollectionBase& Collection) override;
 };
