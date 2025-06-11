@@ -89,11 +89,12 @@ const FVector2D ABaseCharacter::GetHeadLookOffset() const
 	return headLookOffset;
 }
 
-void ABaseCharacter::FirstAttack()
+TArray<AFPSProjectile*> ABaseCharacter::FirstAttack()
 {
+	TArray<AFPSProjectile*> projectilesShooted;
 	UWorld* world = GetWorld();
 
-	if (!world) return;
+	if (!world) return projectilesShooted;
 
 	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
 	{
@@ -116,8 +117,9 @@ void ABaseCharacter::FirstAttack()
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
-				if (projectile == nullptr) { return; }
+				if (projectile == nullptr) { continue; }
 				projectile->characterFrom = this;
+				projectilesShooted.Add(projectile);
 			}
 			else
 			{
@@ -125,18 +127,21 @@ void ABaseCharacter::FirstAttack()
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-				if (projectile == nullptr) { return; }
+				if (projectile == nullptr) { continue; }
 				projectile->characterFrom = this;
+				projectilesShooted.Add(projectile);
 			}
 		}
 	}
+	return projectilesShooted;
 }
 
-void ABaseCharacter::SecondAttack()
+TArray<AFPSProjectile*> ABaseCharacter::SecondAttack()
 {
+	TArray<AFPSProjectile*> projectilesShooted;
 	UWorld* world = GetWorld();
 
-	if (!world) return;
+	if (!world) return projectilesShooted;
 
 	if (weapons.Num() > 0 && weapons[1] && targetingBeacon != nullptr) 
 	{
@@ -150,9 +155,11 @@ void ABaseCharacter::SecondAttack()
 
 		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 			targetingBeacon, spawnLocation, forwardRotator, SpawnParams);
-		if (projectile == nullptr) { return; }
+		if (projectile == nullptr) { return projectilesShooted; }
 		projectile->characterFrom = this;
+		projectilesShooted.Add(projectile);
 	}
+	return projectilesShooted;
 }
 
 void ABaseCharacter::InitializeCollider(FName _socketName, int _index)

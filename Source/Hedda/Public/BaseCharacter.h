@@ -46,9 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	const FVector2D GetHeadLookOffset() const;
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void FirstAttack();
+	TArray<AFPSProjectile*> FirstAttack();
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void SecondAttack();
+	TArray<AFPSProjectile*> SecondAttack();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
