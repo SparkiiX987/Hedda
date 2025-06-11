@@ -23,4 +23,5 @@ public :
 	void PlayMusic(FName _soundName);
 	UFUNCTION(BlueprintCallable, Category = "SoundManager")
 	void StopMusic();
+	void Initialize(FSubsystemCollectionBase& Collection) override;
 };
