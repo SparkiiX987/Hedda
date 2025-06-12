@@ -36,3 +36,16 @@ void USoundManagerSubsystem::StopMusic()
 		musicAudioComponent->Stop();
 	}
 }
+
+void USoundManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
+	FStringAssetReference SoundBankPath(TEXT("/Game/DataAssets/Sounds/DA_USoundBank.DA_USoundBank"));
+	soundBank = Cast<UUSoundBank>(StaticLoadObject(UUSoundBank::StaticClass(), nullptr, *SoundBankPath.ToString()));
+
+	if (!soundBank)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load DA_USoundBank!"));
+	}
+}
