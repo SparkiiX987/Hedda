@@ -27,7 +27,7 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     // Sphere collision component
-    UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+    UPROPERTY(BlueprintReadOnly, Category = Projectile)
     USphereComponent* sphereComponent;
 
     // Projectile movement component
@@ -38,7 +38,7 @@ public:
     AActor* characterFrom;
 
     // Projectile mesh
-    UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+    UPROPERTY(BlueprintReadOnly, Category = Projectile)
     UStaticMeshComponent* projectileMesh;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Caracteristics")
