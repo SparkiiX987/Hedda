@@ -24,22 +24,21 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 
 	if (!_parentComponent)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The _parent component is missing")));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The parent component is missing")));
 		return;
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Getting the NE")));
 	UNiagaraSystem* particule = ParticleBank->GetParticuleByName(_particleName);
 	if (particule)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAttached(
 			particule,
 			_parentComponent,
-			NAME_None,                          // Ou SocketName si nécessaire
+			NAME_None,                          
 			_location,
 			_rotation,
 			EAttachLocation::KeepRelativeOffset,
-			true                                // AutoDestroy
+			true                               
 		);
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Played the NE")));
 	}
