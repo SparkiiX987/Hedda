@@ -22,13 +22,25 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 		return;
 	}
 
+	UNiagaraSystem* particule = ParticleBank->GetParticuleByName(_particleName);
+
 	if (!_parentComponent)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The parent component is missing")));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The _parent component is missing")));
+		if(particule){
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+				GetWorld(),
+				particule,
+				_location,
+				_rotation
+			);
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Played the NE at location")));
+		}
 		return;
 	}
 
-	UNiagaraSystem* particule = ParticleBank->GetParticuleByName(_particleName);
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Getting the NE")));
+
 	if (particule)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAttached(
