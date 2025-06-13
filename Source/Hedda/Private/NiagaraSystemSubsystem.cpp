@@ -10,7 +10,6 @@ void UNiagaraSystemSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	if (!ParticleBank)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Cast returned null")));
 	}
 }
 
@@ -18,7 +17,6 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 {
 	if (!ParticleBank)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The bank is missing")));
 		return;
 	}
 
@@ -26,7 +24,6 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 
 	if (!_parentComponent)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("The _parent component is missing")));
 		if(particule){
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 				GetWorld(),
@@ -34,12 +31,9 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 				_location,
 				_rotation
 			);
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Played the NE at location")));
 		}
 		return;
 	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Getting the NE")));
 
 	if (particule)
 	{
@@ -52,7 +46,6 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 			EAttachLocation::KeepRelativeOffset,
 			true                               
 		);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Played the NE")));
 	}
 }
 
