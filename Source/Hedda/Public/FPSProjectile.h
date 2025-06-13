@@ -27,6 +27,7 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     // Sphere collision component
+
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Projectile)
     USphereComponent* sphereComponent;
 
