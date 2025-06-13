@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundCue.h"
 #include "FNamedSound.generated.h"
 
 USTRUCT(BlueprintType)
@@ -12,5 +13,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	FName SoundName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundBase* sound;
+	USoundCue* sound;
 };

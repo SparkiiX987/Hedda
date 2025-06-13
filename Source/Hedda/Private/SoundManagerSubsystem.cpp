@@ -46,6 +46,10 @@ void USoundManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	if (!soundBank)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to load DA_USoundBank!"));
+		UE_LOG(LogTemp, Error, TEXT("Failed to load DA_USoundBank !"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("DA_USoundBank loaded sucess !"));
 	}
 }
