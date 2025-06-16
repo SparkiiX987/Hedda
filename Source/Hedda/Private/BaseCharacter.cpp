@@ -117,8 +117,8 @@ TArray<AFPSProjectile*> ABaseCharacter::FirstAttack()
 			{
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
-				projectile->damage = weapons[0]->damage;
 				if (projectile == nullptr) { continue; }
+				projectile->damage = weapons[0]->damage;
 				projectile->characterFrom = this;
 				projectilesShooted.Add(projectile);
 			}
@@ -128,8 +128,8 @@ TArray<AFPSProjectile*> ABaseCharacter::FirstAttack()
 				FRotator spawnRotation = randomDir.Rotation();
 				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
 					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
-				projectile->damage = weapons[0]->damage;
 				if (projectile == nullptr) { continue; }
+				projectile->damage = weapons[0]->damage;
 				projectile->characterFrom = this;
 				projectilesShooted.Add(projectile);
 			}
