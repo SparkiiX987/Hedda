@@ -28,8 +28,12 @@ public:
 	USkeletalMeshComponent* bodyMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	ABaseCharacter* baseCharacter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	AMemberFinal* attachedMember;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	UStaticMesh* memberMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UShapeComponent* Collision;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")

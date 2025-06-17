@@ -3,6 +3,7 @@
 
 #include "MemberFinal.h"
 #include "FPSProjectile.h"
+#include "Engine/StaticMeshActor.h"
 #include "Components/ShapeComponent.h"
 #include <Components/CapsuleComponent.h>
 
@@ -44,21 +45,31 @@ void AMemberFinal::Dismember()
 {
 	if (bCanBeDismembered)
 	{
+		if (bIsAttachedToAMember && attachedMember)
+		{
+			attachedMember->Dismember();
+		}
+		if (memberMesh) {
+			AStaticMeshActor* fallenMember = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				GetActorLocation(),
+				GetActorRotation()
+			);
+
+			if (fallenMember)
+			{
+				fallenMember->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				fallenMember->GetStaticMeshComponent()->SetSimulatePhysics(true);
+				fallenMember->GetStaticMeshComponent()->SetEnableGravity(true);
+				fallenMember->SetMobility(EComponentMobility::Movable);
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Finished Spawning member"));
+				fallenMember->GetStaticMeshComponent()->SetStaticMesh(memberMesh);
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Finished setting mesh"));
+			}
+		}
 		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
 		bCanBeUsed = false;
+		Collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
-/*void AMemberFinal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	AFPSProjectile* projectile = Cast<AFPSProjectile>(OtherActor);
-	if (projectile)
-	{
-		baseCharacter->TakeDamage(projectile->damage * multiplacaterDamage);
-		if (GetHealthPoints() <= 0)
-		{
-			Dismember();
-			baseCharacter->membersFinals[baseCharacter->membersFinals.IndexOfByKey(this)]->DestroyChildActor();
-		}
-	}
-}*/
