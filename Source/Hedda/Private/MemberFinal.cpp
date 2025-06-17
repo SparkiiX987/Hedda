@@ -2,6 +2,7 @@
 
 
 #include "MemberFinal.h"
+#include "FPSProjectile.h"
 #include "Components/ShapeComponent.h"
 #include <Components/CapsuleComponent.h>
 
@@ -32,7 +33,6 @@ void AMemberFinal::OnConstruction(const FTransform& Transform)
 void AMemberFinal::TakeDamage(float _amount)
 {
 	currentHitPoint += _amount;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("current hit points: %f"), currentHitPoint));
 }
 
 const float AMemberFinal::GetHealthPoints() const
@@ -45,8 +45,20 @@ void AMemberFinal::Dismember()
 	if (bCanBeDismembered)
 	{
 		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Dismembering %s"), *bodyMesh->SkeletalMesh->GetName()));
-
 		bCanBeUsed = false;
 	}
 }
+
+/*void AMemberFinal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AFPSProjectile* projectile = Cast<AFPSProjectile>(OtherActor);
+	if (projectile)
+	{
+		baseCharacter->TakeDamage(projectile->damage * multiplacaterDamage);
+		if (GetHealthPoints() <= 0)
+		{
+			Dismember();
+			baseCharacter->membersFinals[baseCharacter->membersFinals.IndexOfByKey(this)]->DestroyChildActor();
+		}
+	}
+}*/

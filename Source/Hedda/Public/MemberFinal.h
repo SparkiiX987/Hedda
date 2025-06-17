@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/TriggerCapsule.h"
+#include "BaseCharacter.h"
 #include "MemberFinal.generated.h"
 
 
@@ -25,6 +26,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	USkeletalMeshComponent* bodyMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	ABaseCharacter* baseCharacter;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -41,6 +44,8 @@ protected:
 	bool bIsAttachedToAMember;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	bool bCanBeUsed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
+	float multiplacaterDamage;
 	UPROPERTY(EditAnywhere, Category = "Capsule")
 	float radius;
 	UPROPERTY(EditAnywhere, Category = "Capsule")
