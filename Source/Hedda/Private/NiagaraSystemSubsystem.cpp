@@ -34,7 +34,6 @@ void UNiagaraSystemSubsystem::PlayParticle(FName _particleName, FVector _locatio
 		}
 		return;
 	}
-
 	if (particule)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAttached(
