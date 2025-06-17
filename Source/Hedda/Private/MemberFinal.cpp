@@ -5,6 +5,7 @@
 #include "FPSProjectile.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/ShapeComponent.h"
+#include "SoundManagerSubsystem.h"
 #include <Components/CapsuleComponent.h>
 
 AMemberFinal::AMemberFinal()
@@ -62,14 +63,29 @@ void AMemberFinal::Dismember()
 				fallenMember->GetStaticMeshComponent()->SetSimulatePhysics(true);
 				fallenMember->GetStaticMeshComponent()->SetEnableGravity(true);
 				fallenMember->SetMobility(EComponentMobility::Movable);
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Finished Spawning member"));
 				fallenMember->GetStaticMeshComponent()->SetStaticMesh(memberMesh);
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Finished setting mesh"));
+				fallenMember->GetStaticMeshComponent()->SetNotifyRigidBodyCollision(true);
+				fallenMember->GetStaticMeshComponent()->OnComponentHit.AddDynamic(this, &AMemberFinal::OnFallenMemberHit);
 			}
 		}
 		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
 		bCanBeUsed = false;
 		Collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+}
+
+void AMemberFinal::OnFallenMemberHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (playedOnce)
+	{
+		return;
+	}
+
+	USoundManagerSubsystem* NiagaraSystemSubsystem = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>();
+	if (NiagaraSystemSubsystem && OtherActor->ActorHasTag(TEXT("Floor")))
+	{
+		NiagaraSystemSubsystem->PlaySFX(TEXT("MechaArmsDrop"), GetActorLocation());
+		playedOnce = true;
+	}	
 }
 

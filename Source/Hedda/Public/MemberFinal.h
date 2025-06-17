@@ -22,6 +22,8 @@ public:
 	const float GetHealthPoints() const;
 	UFUNCTION(BlueprintCallable, Category = "Member")
 	void Dismember();
+	UFUNCTION(BlueprintCallable, Category = "Member")
+	void OnFallenMemberHit(UPrimitiveComponent* HitComponent,AActor* OtherActor,UPrimitiveComponent* OtherComponent,FVector NormalImpulse,const FHitResult& Hit);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
@@ -48,6 +50,8 @@ protected:
 	bool bIsAttachedToAMember;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	bool bCanBeUsed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool playedOnce;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Member")
 	float multiplacaterDamage;
 	UPROPERTY(EditAnywhere, Category = "Capsule")
