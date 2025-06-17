@@ -2,18 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "DamageTypeEnum.h"
-#include "Joint.h"
-#include "Member.h"
+#include "MemberTest.h"
+#include "Weapon.h"
+#include "FPSProjectile.h"
 #include "BaseCharacter.generated.h"
 
-UENUM(BlueprintType)
-enum class Faction : uint8
-{
-	Mage	UMETA(DisplayName = "Mage"),
-	Mecha	UMETA(DisplayName = "Mecha"),
-	Neurtal UMETA(DisplayName = "Neutral")
-};
 
 UCLASS()
 class HEDDA_API ABaseCharacter : public ACharacter
@@ -25,59 +20,65 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void HealCHP(float _deltaTime);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
+	void Death();
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateBody(float _deltaTime);
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateHead(FVector2D _rotationOffset);
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	void RotateArms(float _deltaTime);
+	
+	void InitializeCollider(FName _socketName, int _index);
 
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<TObjectPtr<UChildActorComponent>> membersFinals;
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void DealDamage(UDamageTypeEnum _damageType, float _amount, float _time);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
+	void DealDamage(float _amount); 
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
+	UFUNCTION(BlueprintCallable, Category = "Rotation")
+	const FVector2D GetHeadLookOffset() const;
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void AddStamina(float _amount);
+	TArray<AFPSProjectile*> FirstAttack();
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	void SetTimeBeforeHealing(float _time);
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const Faction GetFaction() const;
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const float GetStaimana() const;
-	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
-	const float GetMana() const;
+	TArray<AFPSProjectile*> SecondAttack();
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FVector2D headLookOffset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float bodyRotationInterpSpeed = 6.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	float armsRotationInterpSpeed = 6.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")	
+	float armLookOffsetPitch;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float THP;
+	float maxHealPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float CHP;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float RHP;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float stamina;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float staminaMax;
+	float healPoint;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
 	float movementSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float rotationSpeed;
+	float headRotationSpeed;
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float mana;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	Faction faction;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float CHPHealthSpeed;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float timeBeforeHealing;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float healingCooldown;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	float currentHealingCooldown;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UMember*> members;
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterVariables")
-	TArray<UJoint*> joints;
+	float bodyRotationSpeed;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* lightProjectileSpawnPoint;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* heavyProjectileSpawnPoint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
+	FName forarmSocketName;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterVariables")
+	TArray<UWeapon*> weapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterVariables")
+	TSubclassOf<AFPSProjectile> targetingBeacon;
 };

@@ -1,111 +1,170 @@
 #include "BaseCharacter.h"
+#include "MemberFinal.h"
+#include "Components/ShapeComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 
+	lightProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("lightProjectileSpawnPoint"));
+	lightProjectileSpawnPoint->SetupAttachment(GetMesh(),"lightProjectilesSocket");
+
+	heavyProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("heavyProjectileSpawnPoint"));
+	heavyProjectileSpawnPoint->SetupAttachment(GetMesh(), "heavyProjectilesSocket");
+
+	for (int i = 0; i < 7; i++) {
+		UChildActorComponent* member = CreateDefaultSubobject<UChildActorComponent>(FName(*FString::Printf(TEXT("MemberFinal_%d"), i)));
+		member->SetChildActorClass(AMemberFinal::StaticClass());
+		membersFinals.Add(member);
+	}
+
+	InitializeCollider("CabineSocket", 0);
+	InitializeCollider("BatterySocket", 1);
+	InitializeCollider("HeadSocket", 2);
+	InitializeCollider("LeftArmSocket", 3);
+	InitializeCollider("ForearmLeftSocket", 4);
+	InitializeCollider("RightArmSocket", 5);
+	InitializeCollider("ForearmRightSocket", 6);
 }
 
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+}
+
+void ABaseCharacter::RotateBody(float _deltaTime)
+{
+	if (Controller == nullptr)
+		return;
+	FRotator CurrentControlRot = GetControlRotation();
+
+	float TargetYaw = CurrentControlRot.Yaw + headLookOffset.X;
+
+	FRotator TargetRot(0.f, TargetYaw, 0.f);
+	FRotator SmoothedRot = FMath::RInterpTo(CurrentControlRot, TargetRot, _deltaTime, bodyRotationInterpSpeed);
+
+	Controller->SetControlRotation(SmoothedRot);
+
+	float DeltaYaw = FRotator::NormalizeAxis(SmoothedRot.Yaw - CurrentControlRot.Yaw);
+	headLookOffset.X -= DeltaYaw;
+}
+
+void ABaseCharacter::RotateHead(FVector2D _rotationOffset)
+{
+	headLookOffset += _rotationOffset;
+	headLookOffset.X = FMath::Clamp(headLookOffset.X, -60.0f, 60.0f);
+	headLookOffset.Y = FMath::Clamp(headLookOffset.Y, -40.0f, 15.0f);
+}
+
+void ABaseCharacter::RotateArms(float _deltaTime)
+{
+	float TargetPitch = headLookOffset.Y;
+	armLookOffsetPitch = FMath::FInterpTo(armLookOffsetPitch, TargetPitch, _deltaTime, armsRotationInterpSpeed);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	HealCHP(DeltaTime);
+	RotateBody(DeltaTime);
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-void ABaseCharacter::DealDamage(UDamageTypeEnum _damageType, float _amount, float _time)
-{
-	SetTimeBeforeHealing(_time);
-	currentHealingCooldown = healingCooldown;
-	switch (_damageType)
-	{
-		case UDamageTypeEnum::Blunt:
-			RHP -= (_amount + (0.2f * _amount));
-			CHP = RHP - (0.2f * _amount);
-			stamina -= 0.2f * _amount;
-			break;
-
-		case UDamageTypeEnum::DOT:
-			RHP -= _amount;
-			CHP = RHP - (1 - (0.2f * _amount));
-			break;
-		default:
-			break;
-	}
-}
-
-void ABaseCharacter::HealCHP(float _deltaTime)
-{
-	if(CHP >= RHP)
-	{
-		return;
-	}
-
-	if (timeBeforeHealing > 0)
-	{
-		timeBeforeHealing -= _deltaTime;
-		return;
-	}
-
-	if (currentHealingCooldown > 0)
-	{
-		currentHealingCooldown -= _deltaTime;
-		return;
-	}
-
-	CHP += 1;
-	currentHealingCooldown = healingCooldown;
 }
 
 void ABaseCharacter::Heal(float _amount)
 {
-	RHP += _amount;
-	CHP = RHP;
-}
-
-void ABaseCharacter::AddStamina(float _amount)
-{
-	if (stamina + _amount == staminaMax)
+	healPoint += _amount;
+	if (healPoint > maxHealPoint)
 	{
-		stamina = staminaMax;
-		return;
-	}
-
-	stamina += _amount;
-
-	if (stamina < 0)
-	{
-		stamina = 0;
+		healPoint = maxHealPoint;
 	}
 }
 
-const Faction ABaseCharacter::GetFaction() const
+const FVector2D ABaseCharacter::GetHeadLookOffset() const
 {
-	return faction;
+	return headLookOffset;
 }
 
-void ABaseCharacter::SetTimeBeforeHealing(float _time)
+TArray<AFPSProjectile*> ABaseCharacter::FirstAttack()
 {
-	timeBeforeHealing = _time;
+	TArray<AFPSProjectile*> projectilesShooted;
+	UWorld* world = GetWorld();
+
+	if (!world) return projectilesShooted;
+
+	if (weapons.Num() > 0 && weapons[0] && weapons[0]->projectile)
+	{	
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		TSubclassOf<AFPSProjectile> ProjectileClass = weapons[0]->projectile;
+		float projectileSpread = FMath::Clamp(weapons[0]->spread, 0.0f, 100.0f);
+		float projectileShoot = FMath::Clamp(weapons[0]->bulletNumber, 0.0f, 100.0f);
+
+		const float coneHalfAngleRad = FMath::DegreesToRadians(projectileSpread);
+		FVector forwardVector = lightProjectileSpawnPoint->GetForwardVector();
+		FVector spawnLocation = lightProjectileSpawnPoint->GetComponentLocation();
+		FRotator forwardRotator = forwardVector.Rotation();
+
+		for (int i = 0; i < projectileShoot; i++)
+		{
+			if (projectileSpread == 0)
+			{
+				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+					ProjectileClass, spawnLocation, forwardRotator, SpawnParams);
+				if (projectile == nullptr) { continue; }
+				projectile->damage = weapons[0]->damage;
+				projectile->characterFrom = this;
+				projectilesShooted.Add(projectile);
+			}
+			else
+			{
+				FVector randomDir = FMath::VRandCone(forwardVector, coneHalfAngleRad);
+				FRotator spawnRotation = randomDir.Rotation();
+				AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+					ProjectileClass, spawnLocation, spawnRotation, SpawnParams);
+				if (projectile == nullptr) { continue; }
+				projectile->damage = weapons[0]->damage;
+				projectile->characterFrom = this;
+				projectilesShooted.Add(projectile);
+			}
+		}
+	}
+	return projectilesShooted;
 }
 
-const float ABaseCharacter::GetStaimana() const
+TArray<AFPSProjectile*> ABaseCharacter::SecondAttack()
 {
-	return stamina;
+	TArray<AFPSProjectile*> projectilesShooted;
+	UWorld* world = GetWorld();
+
+	if (!world) return projectilesShooted;
+
+	if (weapons.Num() > 0 && weapons[1] && targetingBeacon != nullptr) 
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+				
+		FVector forwardVector = lightProjectileSpawnPoint->GetForwardVector();
+		FVector spawnLocation = lightProjectileSpawnPoint->GetComponentLocation();
+		FRotator forwardRotator = forwardVector.Rotation();
+
+		AFPSProjectile* projectile = world->SpawnActor<AFPSProjectile>(
+			targetingBeacon, spawnLocation, forwardRotator, SpawnParams);
+		if (projectile == nullptr) { return projectilesShooted; }
+		projectile->characterFrom = this;
+		projectilesShooted.Add(projectile);
+	}
+	return projectilesShooted;
 }
 
-const float ABaseCharacter::GetMana() const
+void ABaseCharacter::InitializeCollider(FName _socketName, int _index)
 {
-	return mana;
+	membersFinals[_index]->SetupAttachment(GetMesh(), _socketName);
 }

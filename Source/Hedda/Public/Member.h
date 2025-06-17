@@ -1,30 +1,17 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Engine/TriggerCapsule.h"
 #include "Member.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class HEDDA_API UMember : public USkeletalMeshComponent
+class HEDDA_API AMember : public ATriggerCapsule
 {
 	GENERATED_BODY()
-	
-public:
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	UMember();
-	UFUNCTION(BlueprintCallable)
-	const int GetHitPoint() const;
-
-protected:
-	void Heal(float DeltaTime);
-
-	UFUNCTION(BlueprintCallable)
-	void TakeDamage();
-
-protected:
-	int maxHitPoint;
-	int currentHitPoint;
-	float healTime;
-	float currentHealtTime;
 	
 };
