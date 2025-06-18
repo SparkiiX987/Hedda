@@ -50,6 +50,10 @@ void AMemberFinal::Dismember()
 		{
 			attachedMember->Dismember();
 		}
+		else if (attachedMember)
+		{
+			attachedMember->bIsAttachedToAMember = false;
+		}
 
 		if (memberMesh) {
 
