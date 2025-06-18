@@ -2,7 +2,10 @@
 
 
 #include "MemberFinal.h"
+#include "FPSProjectile.h"
+#include "Engine/StaticMeshActor.h"
 #include "Components/ShapeComponent.h"
+#include "SoundManagerSubsystem.h"
 #include <Components/CapsuleComponent.h>
 
 AMemberFinal::AMemberFinal()
@@ -32,7 +35,6 @@ void AMemberFinal::OnConstruction(const FTransform& Transform)
 void AMemberFinal::TakeDamage(float _amount)
 {
 	currentHitPoint += _amount;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("current hit points: %f"), currentHitPoint));
 }
 
 const float AMemberFinal::GetHealthPoints() const
@@ -44,9 +46,51 @@ void AMemberFinal::Dismember()
 {
 	if (bCanBeDismembered)
 	{
-		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Dismembering %s"), *bodyMesh->SkeletalMesh->GetName()));
+		if (bIsAttachedToAMember && attachedMember)
+		{
+			attachedMember->Dismember();
+		}
+		else if (attachedMember)
+		{
+			attachedMember->bIsAttachedToAMember = false;
+		}
 
+		if (memberMesh) {
+
+			AStaticMeshActor* fallenMember = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				GetActorLocation(),
+				GetActorRotation()
+			);
+
+			if (fallenMember)
+			{
+				fallenMember->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				fallenMember->GetStaticMeshComponent()->SetSimulatePhysics(true);
+				fallenMember->GetStaticMeshComponent()->SetEnableGravity(true);
+				fallenMember->SetMobility(EComponentMobility::Movable);
+				fallenMember->GetStaticMeshComponent()->SetStaticMesh(memberMesh);
+				fallenMember->GetStaticMeshComponent()->SetNotifyRigidBodyCollision(true);
+				fallenMember->GetStaticMeshComponent()->OnComponentHit.AddDynamic(this, &AMemberFinal::OnFallenMemberHit);
+			}
+		}
+		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
 		bCanBeUsed = false;
+		Collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMemberFinal::OnFallenMemberHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (playedOnce)
+	{
+		return;
+	}
+
+	USoundManagerSubsystem* NiagaraSystemSubsystem = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>();
+	if (NiagaraSystemSubsystem && OtherActor->ActorHasTag(TEXT("Floor")))
+	{
+		NiagaraSystemSubsystem->PlaySFX(TEXT("MechaArmsDrop"), GetActorLocation());
+		playedOnce = true;
 	}
 }
