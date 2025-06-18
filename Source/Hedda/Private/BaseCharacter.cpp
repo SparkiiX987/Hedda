@@ -20,7 +20,7 @@ ABaseCharacter::ABaseCharacter()
 		membersFinals.Add(member);
 	}
 
-	InitializeCollider("CabineSocket", 0);
+	InitializeCollider("cabinSocket", 0);
 	InitializeCollider("BatterySocket", 1);
 	InitializeCollider("HeadSocket", 2);
 	InitializeCollider("LeftArmSocket", 3);
