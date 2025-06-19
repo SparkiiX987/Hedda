@@ -66,13 +66,3 @@ void AFPSProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AFPSProjectile::OnProjectileHit(AActor* _otherActor, UPrimitiveComponent* _otherComponent)
-{
-	if (!IsValid(_otherActor) || !IsValid(_otherComponent)) return;
-
-	ABaseCharacter* enemy = Cast<ABaseCharacter>(_otherActor);
-	if (IsValid(enemy))
-	{
-		enemy->DealDamage(damage);
-	}
-}
