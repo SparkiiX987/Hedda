@@ -21,7 +21,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
-	void Death();
+	void Death(bool bByPlayer);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 	void RotateBody(float _deltaTime);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
@@ -40,7 +40,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "CharacterFunction")
-	void DealDamage(float _amount); 
+	void DealDamage(float _amount, bool _bFromPlayer); 
 	UFUNCTION(BlueprintCallable, Category = "CharacterFunction")
 	void Heal(float _amount);
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
