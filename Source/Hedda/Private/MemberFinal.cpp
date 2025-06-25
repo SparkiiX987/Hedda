@@ -73,6 +73,7 @@ void AMemberFinal::Dismember()
 				fallenMember->GetStaticMeshComponent()->SetNotifyRigidBodyCollision(true);
 				fallenMember->GetStaticMeshComponent()->OnComponentHit.AddDynamic(this, &AMemberFinal::OnFallenMemberHit);
 				fallenMember->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+				fallenMember->GetStaticMeshComponent()->SetMaterial(0, bodyMesh->GetMaterial(0));
 			}
 		}
 		bodyMesh->HideBoneByName(AttachedBoneName, EPhysBodyOp::PBO_None);
